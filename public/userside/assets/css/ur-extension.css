@@ -1,0 +1,28 @@
+@import "../fonts/fontello/css/fontello.css?v1.1";
+@import "../fonts/fontello/css/animation.css?v1.1";
+@import "../fonts/awesome/css/font-awesome.css";
+@import "../plugins/bootstrap-modal/css/bootstrap-modal-bootheme.css";
+@import "../plugins/bootstrap-toggle-button/css/bootstrap-toggle-buttons-theme.css";
+@import "../plugins/pl-system-info/qtip2/dist/jquery.qtip.css";
+@import "../plugins/pl-system-info/notyfy/themes/boo-notyfylight.css";
+@import "../plugins/pl-form/uniform/css/uniform-theme.css";
+@import "../plugins/pl-form/select2-3.5.2/select2.css?v0.1";
+@font-face {
+    font-family: fortemt;
+    src: url(../fonts/forte/forte.eot);
+    src: url(../fonts/forte/forte.eot?#iefix) format('embedded-opentype'), url(../fonts/forte/forte.woff) format('woff'), url(../fonts/forte/forte.ttf) format('truetype'), url(../fonts/forte/forte.svg#forte) format('svg');
+    font-weight: 400;
+    font-style: normal
+}
+
+.codesOn .i-name {
+    display: none
+}
+
+.codesOn .i-code {
+    display: inline
+}
+
+.i-code {
+    display: none
+}
