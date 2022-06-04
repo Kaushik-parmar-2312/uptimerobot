@@ -229,10 +229,10 @@
                                                      {{ $row['userLogsHours'] }}</div>
                                                  <ul class="uptimeChart">
                                                      <li data-tooltip="
-                                                                         Start Time: {{ $row['created_at'] }}<br>
+                                                                         Start Time: {{\Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s')}}<br>
                                                                          End Time: {{ \Carbon\Carbon::now() }}  <br>
-                                                                         Duration: {{ \Carbon\Carbon::now()->diffInHours($row['created_at']) }} hrs, mins<br>
-                                                                         Status: Down"
+                                                                         Duration:{{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'],true)) }} hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'],true)/3600) }} mins<br>
+                                                                        Status: Down"
                                                          style="width: 100%; background:#ba3737;">
                                                          <img src="{{ asset('userside/assets/img/1px.webp') }}"
                                                              alt="1px">
@@ -251,9 +251,9 @@
                                                      {{ $row['userLogsHours'] }}</div>
                                                  <ul class="uptimeChart">
                                                      <li data-tooltip="
-                                                                               Start Time: {{ $row['created_at'] }}<br>
+                                                                               Start Time: {{\Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s')}}<br>
                                                                                End Time: {{ \Carbon\Carbon::now() }}  <br>
-                                                                               Duration: {{ \Carbon\Carbon::now()->diffInHours($row['created_at']) }} hrs, mins<br>
+                                                                               Duration: {{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'],true)) }} hrs,{{  round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'],true)/3600) }} mins<br>
                                                                                Status: Up"
                                                          style="width: 100%; background:#4da74d;">
                                                          <img src="{{ asset('userside/assets/img/1px.webp') }}"

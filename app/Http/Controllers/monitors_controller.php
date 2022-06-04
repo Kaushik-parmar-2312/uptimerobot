@@ -7,6 +7,9 @@ use App\Models\monitor_contact_details;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserLogModel;
+use Carbon\Carbon;
+use DateTime;
 
 class monitors_controller extends Controller
 {
@@ -599,6 +602,42 @@ class monitors_controller extends Controller
     
     public function mainDashboard()
     {
+        //24 hours
+        $total24hrs=UserLogModel::where('created_at', '<=', Carbon::now()->subDay()->toDateTimeString())->count();
+       
+        $totalUpMonitors=UserLogModel::where('status','Up')->where('created_at', '<=', Carbon::now()->subDay()->toDateTimeString())->count();
+      
+        if($total24hrs != 0) {
+            $data['userLogsHours'] =round((($totalUpMonitors * 100)/$total24hrs),2);
+        } else {
+
+            $data['userLogsHours'] = 0.00;
+        }
+
+     //7 days
+     $total7Days=UserLogModel::where('created_at', '<=', Carbon::now()->subDay(7)->toDateTimeString())->count();
+     $totalUpMonitor=UserLogModel::where('status','Up')->where('created_at', '<=', Carbon::now()->subDay(7)->toDateTimeString())->count();
+
+     if($total7Days != 0) {
+
+         $data['userLogs7Days'] =round((($totalUpMonitor * 100)/$total7Days),2);
+     } else {
+
+         $data['userLogs7Days'] = 0.00;
+     }
+
+     //30 days
+     $total30Days=UserLogModel::where('created_at', '<=', Carbon::now()->subDay(30)->toDateTimeString())->count();
+     $total_UpMonitor=UserLogModel::where('status','Up')->where('created_at', '<=', Carbon::now()->subDay(30)->toDateTimeString())->count();
+
+     if($total30Days != 0) {
+
+         $data['userLogs30Days']=round((($total_UpMonitor * 100)/$total30Days),2);
+     } else {
+
+         $data['userLogs30Days'] = 0.00;
+     }
+
         $data['count'] = DB::table("monitors")
 	    ->select(DB::raw("COUNT(monitors.id) as Total_count"),
                 DB::raw("(select count(id)  from monitors where pause = 1 and user_id = ".auth()->user()->id .") as pause "),
@@ -607,9 +646,11 @@ class monitors_controller extends Controller
                 )
         ->join('users','users.id','=','monitors.user_id')
         ->where('monitors.user_id',auth()->user()->id)
-	    ->get()->first();   
+	    ->get()->first();          
 
-       
+        $data['latestDownTime'] = UserLogModel::with('monitor')->where('status','Down')->orderBy('id','desc')->limit(1)->get()->toArray();
+       // dd($data);
+       $data['record']= UserLogModel::with('monitor')->orderBy('id','asc')->limit(10)->get()->toArray();
         return view('pages.mainDashboard',compact('data'));
     }
 

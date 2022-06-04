@@ -124,6 +124,8 @@ class monitor_up_down extends Command
                                             $logs->interval = $m['interval'];
                                             $logs->save();
 
+                                            $data = array('status' => 1);
+                                            monitors::where('id', $m['id'])->update($data);
                                             
                                         }
                                     }
@@ -149,6 +151,8 @@ class monitor_up_down extends Command
 
                                     }
                                     $logs->save();
+                                    $data = array('status' => 0);
+                                    monitors::where('id', $m['id'])->update($data);
                                 }
 
                             }
@@ -225,6 +229,9 @@ class monitor_up_down extends Command
                                                     //  $logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->save();
+
+                                                    $data = array('status' => 1);
+                                                    monitors::where('id', $m['id'])->update($data);
                                                 }
                                             }
                                         }
@@ -247,6 +254,8 @@ class monitor_up_down extends Command
 
                                             }
                                             $logs->save();
+                                            $data = array('status' => 0);
+                                            monitors::where('id', $m['id'])->update($data);
                                         }
 
                                     }
@@ -318,6 +327,8 @@ class monitor_up_down extends Command
                                                 $logs->interval = $m['interval'];
 
                                                 $logs->save();
+                                                $data = array('status' => 1);
+                                                monitors::where('id', $m['id'])->update($data);
                                             }
                                         }
                                     }
@@ -344,6 +355,8 @@ class monitor_up_down extends Command
 
                                         }
                                         $logs->save();
+                                        $data = array('status' => 0);
+                                        $d = monitors::where('id', $m['id'])->update($data);
                                     }
 
                                 }
@@ -424,6 +437,8 @@ class monitor_up_down extends Command
                                         $logs->interval = $m['interval'];
                                         // dd($logs);
                                         $logs->save();
+                                        $data = array('status' => 1);
+                                        monitors::where('id', $m['id'])->update($data);
                                     }
                                 }
                             }
@@ -449,6 +464,8 @@ class monitor_up_down extends Command
 
                                 }
                                 $logs->save();
+                                $data = array('status' => 1);
+                                monitors::where('id', $m['id'])->update($data);
                             }
 
                         }
@@ -533,6 +550,8 @@ class monitor_up_down extends Command
                                             // $logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->save();
+                                            $data = array('status' => 1);
+                                            monitors::where('id', $m['id'])->update($data);
                                         }
                                     }
                                 }
@@ -557,6 +576,8 @@ class monitor_up_down extends Command
 
                                     }
                                     $logs->save();
+                                    $data = array('status' => 0);
+                                    monitors::where('id', $m['id'])->update($data);
                                 }
 
                             }
@@ -633,6 +654,8 @@ class monitor_up_down extends Command
                                                     //  $logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->save();
+                                                    $data = array('status' => 1);
+                                                    monitors::where('id', $m['id'])->update($data);
                                                 }
                                             }
                                         }
@@ -655,6 +678,8 @@ class monitor_up_down extends Command
 
                                             }
                                             $logs->save();
+                                            $data = array('status' => 0);
+                                            monitors::where('id', $m['id'])->update($data);
                                         }
 
                                     }
@@ -726,6 +751,8 @@ class monitor_up_down extends Command
                                                 $logs->interval = $m['interval'];
 
                                                 $logs->save();
+                                                $data = array('status' => 1);
+                                                monitors::where('id', $m['id'])->update($data);
                                             }
                                         }
                                     }
@@ -752,6 +779,8 @@ class monitor_up_down extends Command
 
                                         }
                                         $logs->save();
+                                        $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                     }
 
                                 }
@@ -832,6 +861,8 @@ class monitor_up_down extends Command
                                         $logs->interval = $m['interval'];
                                         // dd($logs);
                                         $logs->save();
+                                        $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                     }
                                 }
                             }
@@ -857,6 +888,8 @@ class monitor_up_down extends Command
 
                                 }
                                 $logs->save();
+                                $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                             }
 
                         }
@@ -943,6 +976,8 @@ class monitor_up_down extends Command
                                             // $logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->save();
+                                            $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                         }
                                     }
                                 }
@@ -967,6 +1002,8 @@ class monitor_up_down extends Command
 
                                     }
                                     $logs->save();
+                                    $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                 }
 
                             }
@@ -1043,6 +1080,8 @@ class monitor_up_down extends Command
                                                     //  $logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->save();
+                                                    $data = array('status' => 1);
+                                                    monitors::where('id', $m['id'])->update($data);
                                                 }
                                             }
                                         }
@@ -1065,6 +1104,8 @@ class monitor_up_down extends Command
 
                                             }
                                             $logs->save();
+                                            $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                         }
 
                                     }
@@ -1136,6 +1177,8 @@ class monitor_up_down extends Command
                                                 $logs->interval = $m['interval'];
 
                                                 $logs->save();
+                                                $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                             }
                                         }
                                     }
@@ -1162,6 +1205,8 @@ class monitor_up_down extends Command
 
                                         }
                                         $logs->save();
+                                        $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                     }
 
                                 }
@@ -1242,6 +1287,8 @@ class monitor_up_down extends Command
                                         $logs->interval = $m['interval'];
                                         // dd($logs);
                                         $logs->save();
+                                        $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                     }
                                 }
                             }
@@ -1267,6 +1314,8 @@ class monitor_up_down extends Command
 
                                 }
                                 $logs->save();
+                                $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                             }
 
                         }
@@ -1370,6 +1419,8 @@ class monitor_up_down extends Command
                                             // $logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->save();
+                                            $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                         }
                                     }
                                 }
@@ -1394,6 +1445,8 @@ class monitor_up_down extends Command
 
                                     }
                                     $logs->save();
+                                    $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                 }
 
                             }
@@ -1471,6 +1524,8 @@ class monitor_up_down extends Command
                                                     //  $logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->save();
+                                                    $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                                 }
                                             }
                                         }
@@ -1493,6 +1548,8 @@ class monitor_up_down extends Command
 
                                             }
                                             $logs->save();
+                                            $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                         }
 
                                     }
@@ -1565,6 +1622,8 @@ class monitor_up_down extends Command
                                                 $logs->interval = $m['interval'];
 
                                                 $logs->save();
+                                                $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                             }
                                         }
                                     }
@@ -1591,6 +1650,8 @@ class monitor_up_down extends Command
 
                                         }
                                         $logs->save();
+                                        $data = array('status' => 0);
+                                       monitors::where('id', $m['id'])->update($data);
                                     }
 
                                 }
@@ -1673,6 +1734,8 @@ class monitor_up_down extends Command
                                         $logs->interval = $m['interval'];
                                         // dd($logs);
                                         $logs->save();
+                                        $data = array('status' => 1);
+                                       monitors::where('id', $m['id'])->update($data);
                                     }
                                 }
                             }
@@ -1698,6 +1761,8 @@ class monitor_up_down extends Command
 
                                 }
                                 $logs->save();
+                                $data = array('status' => 0);
+                                monitors::where('id', $m['id'])->update($data);
                             }
 
                         }
