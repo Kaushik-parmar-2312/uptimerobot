@@ -11,7 +11,7 @@ class UserLogModel extends Model
     use HasFactory;
     protected $table = 'logs';
     protected $fillable = [
-        'monitor_id','status','min','avg','max','mdev','interval','user_id'
+        'monitor_id','status','min','avg','max','mdev','interval','user_id','StatusCode'
     ];
 
     public function monitor()

@@ -13,7 +13,6 @@ class coantct_detalis_controller extends Controller
     public function Contact_list()
     {
         $Contact_detalis =contact_detlais::where('user_id', auth()->user()->id)->get();
-
         // echo $Contact_detalis;
         return view('userside.contact', compact('Contact_detalis'));
     }

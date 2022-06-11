@@ -40,7 +40,7 @@
                                          class="mySettings mySettingsMobile">My Settings</a></li>
                                  <li style="padding: 0 10px;"><a href="{{ route('logout') }}"
                                          onclick="event.preventDefault();
-                                                                            document.getElementById('logout-form').submit();">Logout</a>
+                                                                                document.getElementById('logout-form').submit();">Logout</a>
                                      <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                          class="d-none">
                                          @csrf
@@ -179,8 +179,8 @@
 
 
                  <ul id="mainSideMenu" class="nav nav-list nav-side">
-                        
-                     @if (empty($data))
+
+                     @if (empty($data[0]) || $data == ' ')
                          <li class="accordion-group" id="noMonitorsYet" style="background: #373b3e;">
                              <div class="accordion-heading">
                                  <span style="color:#e6e8eb;">You have no monitors yet.</span>
@@ -196,12 +196,11 @@
                                              <span class="label sidebarMonitorPercentage"
                                                  style="background-color: #ba3737">{{ $row['userLogsHours'] }}%</span>
                                          @elseif($row['status'] == 1)
-                                         <span class="label sidebarMonitorPercentage"
-                                         style="background-color: #4da74d">{{$row['userLogsHours']}}%</span>
-                                        
+                                             <span class="label sidebarMonitorPercentage"
+                                                 style="background-color: #4da74d">{{ $row['userLogsHours'] }}%</span>
                                          @elseif($row['status'] == '' || $row['status'] == null)
-                                            <span class="label sidebarMonitorPercentage "
-                                            style="background-color: #">{{$row['userLogsHours']}}%</span>
+                                             <span class="label sidebarMonitorPercentage "
+                                                 style="background-color: #">{{ $row['userLogsHours'] }}%</span>
                                          @endif
                                      @else
                                          <span class="label sidebarMonitorPercentage"
@@ -229,10 +228,10 @@
                                                      {{ $row['userLogsHours'] }}</div>
                                                  <ul class="uptimeChart">
                                                      <li data-tooltip="
-                                                                         Start Time: {{\Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s')}}<br>
-                                                                         End Time: {{ \Carbon\Carbon::now() }}  <br>
-                                                                         Duration:{{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'],true)) }} hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'],true)/3600) }} mins<br>
-                                                                        Status: Down"
+                                                                             Start Time: {{ \Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s') }}<br>
+                                                                             End Time: {{ \Carbon\Carbon::now() }}  <br>
+                                                                             Duration:{{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'], true)) }} hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'], true) / 3600) }} mins<br>
+                                                                            Status: Down"
                                                          style="width: 100%; background:#ba3737;">
                                                          <img src="{{ asset('userside/assets/img/1px.webp') }}"
                                                              alt="1px">
@@ -251,10 +250,10 @@
                                                      {{ $row['userLogsHours'] }}</div>
                                                  <ul class="uptimeChart">
                                                      <li data-tooltip="
-                                                                               Start Time: {{\Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s')}}<br>
-                                                                               End Time: {{ \Carbon\Carbon::now() }}  <br>
-                                                                               Duration: {{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'],true)) }} hrs,{{  round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'],true)/3600) }} mins<br>
-                                                                               Status: Up"
+                                                                                   Start Time: {{ \Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s') }}<br>
+                                                                                   End Time: {{ \Carbon\Carbon::now() }}  <br>
+                                                                                   Duration: {{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'], true)) }} hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'], true) / 3600) }} mins<br>
+                                                                                   Status: Up"
                                                          style="width: 100%; background:#4da74d;">
                                                          <img src="{{ asset('userside/assets/img/1px.webp') }}"
                                                              alt="1px">
@@ -352,7 +351,7 @@
                          {{-- logout --}}
                          <li class="standardHeaderItem" style="float: right;">
                              <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                    document.getElementById('logout-form').submit();"
+                                                                        document.getElementById('logout-form').submit();"
                                  class="text-dirtyred">Logout</a>
 
                              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

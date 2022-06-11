@@ -373,27 +373,30 @@
                             </thead>
                             {{-- list --}}
                             <tbody>
-
-                                @if (empty($Contact_detalis))
+                                
+                                @if(empty($Contact_detalis[0]))
+                                    <tr class="alertContact">
+                                        
+                                        <tr ><td colspan="3" class="text-center">No data Found</td></tr>
                                 @else
                                     @foreach ($Contact_detalis as $list)
-                                        @if ($list->status == 1)
+                                        @if ($list['status'] == 1)
                                             {{-- check email verifry or not --}}
-                                            @if ($list->account_type == 'base')
-                                                <tr class="" data-alertcontactid="{{ $list->id }}">
+                                            @if ($list['account_type'] == 'base')
+                                                <tr class="" data-alertcontactid="{{ $list['id'] }}">
                                                     <td><i class="fontello-icon-mail" title="E-mail"></i></td>
-                                                    <td><span title="{{ $list->email }}">{{ $list->email }}</span>
+                                                    <td><span title="{{ $list['email'] }}">{{ $list['email'] }}</span>
                                                     </td>
                                                     <td>
                                                         <a class="editBaseAccountEmailAlertContact"
-                                                            data-alertcontactid="{{ $list->id }}"
+                                                            data-alertcontactid="{{ $list['id'] }}"
                                                             data-toggle="modal" href="#editAlertContact">
                                                             <i class="fontello-icon-pencil"
                                                                 title="Edit Alert Contact"></i>
                                                         </a>
-                                                        @if ($list->alert_start_stop == 1)
+                                                        @if ($list['alert_start_stop'] == 1)
                                                             <a class="startStopAlertContact"
-                                                                data-alertcontactid="{{ $list->id }}" href="#"
+                                                                data-alertcontactid="{{ $list['id'] }}" href="#"
                                                                 style="padding: 0px 0px 0px 3px;">
                                                                 <i class="fontello-icon-pause-1"
                                                                     title="Disable Alert Contact">
@@ -401,7 +404,7 @@
                                                             </a>
                                                         @else
                                                             <a class="startStopAlertContact"
-                                                                data-alertcontactid="{{ $list->id }}" href="#"
+                                                                data-alertcontactid="{{ $list['id'] }}" href="#"
                                                                 style="padding: 0px 0px 0px 3px;">
                                                                 <i class="fontello-icon-play-1"
                                                                     title="Disable Alert Contact">
@@ -413,24 +416,24 @@
                                                     </td>
                                                 </tr>
                                             @else
-                                                <tr class="alertContact" data-alertcontactid="{{ $list->id }}">
+                                                <tr class="alertContact" data-alertcontactid="{{ $list['id'] }}">
                                                     <td><i class="fontello-icon-mail"></i></td>
                                                     <td><span
-                                                            title="{{ $list->email }}">{{ $list->Friendly_Name }}</span>
+                                                            title="{{ $list['email'] }}">{{ $list['Friendly_Name'] }}</span>
                                                     </td>
                                                     <td>
                                                         <a class="editAlertContact"
-                                                            data-alertcontactid="{{ $list->id }}"
+                                                            data-alertcontactid="{{ $list['id'] }}"
                                                             data-toggle="modal" href="#editAlertContact"><i
                                                                 class="fontello-icon-pencil"></i>
                                                         </a>
                                                         <a class="startStopAlertContact" href="#editAlertContact"
-                                                            data-alertcontactid="{{ $list->id }}"><i
+                                                            data-alertcontactid="{{ $list['id'] }}"><i
                                                                 class="fontello-icon-pause-1"></i> </a>
 
 
                                                         <a class="deleteAlertContact"
-                                                            data-alertcontactid="{{ $list->id }}"
+                                                            data-alertcontactid="{{ $list['id'] }}"
                                                             data-toggle="modal" href="#deleteAlertContact"><i
                                                                 class="fontello-icon-cancel-3"></i>
                                                         </a>
@@ -439,18 +442,18 @@
                                             @endif
                                         @else
                                             <tr class="alertContactDisabled"
-                                                data-alertcontactid="{{ $list->id }}">
+                                                data-alertcontactid="{{ $list['id'] }}">
                                                 <td><i class="fontello-icon-mail"></i></td>
                                                 <td><span
-                                                        title="{{ $list->email }}">{{ $list->Friendly_Name }}</span>
+                                                        title="{{ $list['email'] }}">{{ $list['Friendly_Name'] }}</span>
                                                 </td>
                                                 <td>
                                                     <a class="editAlertContact"
-                                                        data-alertcontactid="{{ $list->id }}" data-toggle="modal"
+                                                        data-alertcontactid="{{ $list['id'] }}" data-toggle="modal"
                                                         href="#editAlertContact"><i class="fontello-icon-pencil"></i>
                                                     </a> <i class="fontello-icon-lock-1"></i> <a
                                                         class="deleteAlertContact"
-                                                        data-alertcontactid="{{ $list->id }}" data-toggle="modal"
+                                                        data-alertcontactid="{{ $list['id'] }}" data-toggle="modal"
                                                         href="#deleteAlertContact"><i
                                                             class="fontello-icon-cancel-3"></i>
                                                     </a>
@@ -459,7 +462,6 @@
                                         @endif
                                     @endforeach
                                 @endif
-
 
                             </tbody>
 

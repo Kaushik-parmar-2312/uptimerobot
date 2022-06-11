@@ -1,395 +1,314 @@
 {{-- <script type="text/javascript">
-    $(document).ready(function() {
+	$(document).ready(function() {
 
-        var timezoneDiff = +330;
+		var timezoneDiff = +330;
 
-        /* Response Time Chart - START */
-        dashboard_A_chart = {
-            // Dashboard 1 Chart Visit
-            chartVisit: function() {
-                var elem = $('#dashChartResponseTimes');
-                //Get initial response time info
-                var d1 = [
-                    [1650816000000, 89],
-                    [1650817800000, 102],
-                    [1650819600000, 110],
-                    [1650821400000, 104],
-                    [1650823200000, 119],
-                    [1650825000000, 121],
-                    [1650826800000, 76],
-                    [1650828600000, 121],
-                    [1650830400000, 185],
-                    [1650832200000, 246],
-                    [1650834000000, 69],
-                    [1650835800000, 102],
-                    [1650837600000, 71],
-                    [1650839400000, 7319],
-                    [1650841200000, 103],
-                    [1650843000000, 68],
-                    [1650844800000, 74],
-                    [1650846600000, 181],
-                    [1650848400000, 98],
-                    [1650850200000, 73],
-                    [1650852000000, 81],
-                    [1650853800000, 44],
-                    [1650855600000, 113],
-                    [1650857400000, 62],
-                    [1650859200000, 80],
-                    [1650861000000, 84],
-                    [1650862800000, 332],
-                    [1650864600000, 90],
-                    [1650866400000, 91],
-                    [1650868200000, 105],
-                    [1650870000000, 158],
-                    [1650871800000, 73],
-                    [1650873600000, 90],
-                    [1650875400000, 209],
-                    [1650877200000, 87],
-                    [1650879000000, 95],
-                    [1650880800000, 119],
-                    [1650882600000, 51],
-                    [1650884400000, 78],
-                    [1650886200000, 146],
-                    [1650888000000, 81],
-                    [1650889800000, 73],
-                    [1650891600000, 64],
-                    [1650893400000, 72],
-                    [1650895200000, 112],
-                    [1650897000000, 207],
-                    [1650898800000, 45],
-                    [1650900600000, 55]
-                ];
+		/* Response Time Chart - START */
+		dashboard_A_chart = {
+			// Dashboard 1 Chart Visit
+			chartVisit: function() {
+				var elem = $('#dashChartResponseTimes');
+				//Get initial response time info
+				var d1 =
+					[[1654705800000, 535],[1654707600000, 527],[1654709400000, 518],[1654711200000, 533],[1654713000000, 523],[1654714800000, 537],[1654716600000, 529],[1654718400000, 527],[1654720200000, 556],[1654722000000, 546],[1654723800000, 523],[1654725600000, 566],[1654727400000, 576],[1654729200000, 527],[1654731000000, 603],[1654732800000, 587],[1654734600000, 592],[1654736400000, 530],[1654738200000, 571],[1654740000000, 539],[1654741800000, 727],[1654743600000, 530],[1654745400000, 554],[1654747200000, 1072],[1654749000000, 577],[1654750800000, 571],[1654752600000, 593],[1654754400000, 769],[1654756200000, 602],[1654758000000, 628],[1654759800000, 1178],[1654761600000, 569],[1654763400000, 533],[1654765200000, 532],[1654767000000, 538],[1654768800000, 545],[1654770600000, 539],[1654772400000, 562],[1654774200000, 541],[1654776000000, 558],[1654777800000, 534],[1654779600000, 535],[1654781400000, 522],[1654783200000, 532],[1654785000000, 530],[1654786800000, 534],[1654788600000, 695],[1654790400000, 526]];
 
-                var averageResponseTime = 0;
-                if (d1.length > 0) {
-                    totalResTime = 0;
-                    for (i = 0; i < d1.length; i++) {
-                        if (d1[i][1] > 0) {
-                            totalResTime += d1[i][1];
-                        }
-                    }
-                    var averageResponseTime = totalResTime / d1.length;
-                }
+				var averageResponseTime = 0;
+				if (d1.length > 0) {
+					totalResTime = 0;
+					for (i = 0; i < d1.length; i++) {
+						if (d1[i][1] > 0) {
+							totalResTime += d1[i][1];
+						}
+					}
+					var averageResponseTime = totalResTime / d1.length;
+				}
 
-                averageResponseTime = averageResponseTime.toFixed(2);
-                $('#monitorChartsWrapper h3').find('.averageResponseTime').html(" (" +
-                    averageResponseTime + "ms av.)");
-                $('#monitorChartsWrapper .pagedesc').find('.averageResponseTimeDesc').html(
-                    averageResponseTime);
+				averageResponseTime = averageResponseTime.toFixed(2);
+				$('#monitorChartsWrapper h3').find('.averageResponseTime').html(" (" + averageResponseTime + "ms av.)");
+				$('#monitorChartsWrapper .pagedesc').find('.averageResponseTimeDesc').html(averageResponseTime);
 
-                // first correct the timestamps - they are recorded as the daily
-                // midnights in UTC+0100, but Flot always displays dates in UTC
-                // so we have to add one hour to hit the midnights in the plot
+				// first correct the timestamps - they are recorded as the daily
+				// midnights in UTC+0100, but Flot always displays dates in UTC
+				// so we have to add one hour to hit the midnights in the plot
 
-                var options = {
-                    colors: ["#edc240", "#5EB95E"],
-                    legend: {
-                        show: true,
-                        noColumns: 2, // number of colums in legend table
-                        labelFormatter: null, // fn: string -> string
-                        labelBoxBorderColor: false,
-                        container: null, // container (as jQuery object) to put legend in, null means default on top of graph
-                        margin: 8,
-                        backgroundColor: false,
-                        container: $("#legendContainer")
-                    },
-                    series: {
-                        lines: {
-                            show: true,
-                            lineWidth: 4,
-                            fill: true
-                        },
-                        points: {
-                            show: true,
-                            fillColor: "rgba(0,0,0,0.35)",
-                            radius: 3.5,
-                            lineWidth: 1.5
-                        },
-                        grow: {
-                            active: false
-                        }
-                    },
-                    xaxis: {
-                        mode: "time",
-                        font: {
-                            weight: "bold"
-                        },
-                        color: "#D6D8DB",
-                        tickColor: "rgba(237,194,64,0.25)",
-                        min: moment().subtract(1, 'days').add(timezoneDiff, 'minutes').format('x'),
-                        max: moment((d1.length > 0) ? d1.slice(-1)[0][0] : null).format('x'),
-                        tickLength: 5
-                    },
-                    selection: {
-                        mode: "x"
-                    },
-                    grid: {
-                        color: "#D6D8DB",
-                        tickColor: "rgba(255,255,255,0.05)",
-                        borderWidth: 0,
-                        clickable: true,
-                        hoverable: true
-                    }
-                };
+				var options = {
+					colors: ["#edc240", "#5EB95E"],
+					legend: {
+						show: true,
+						noColumns: 2, // number of colums in legend table
+						labelFormatter: null, // fn: string -> string
+						labelBoxBorderColor: false,
+						container: null, // container (as jQuery object) to put legend in, null means default on top of graph
+						margin: 8,
+						backgroundColor: false,
+						container: $("#legendContainer")
+					},
+					series: {
+						lines: {
+							show: true,
+							lineWidth: 4,
+							fill: true
+						},
+						points: {
+							show: true,
+							fillColor: "rgba(0,0,0,0.35)",
+							radius: 3.5,
+							lineWidth: 1.5
+						},
+						grow: {
+							active: false
+						}
+					},
+					xaxis: {
+						mode: "time",
+						font: {
+							weight: "bold"
+						},
+						color: "#D6D8DB",
+						tickColor: "rgba(237,194,64,0.25)",
+						min: moment().subtract(1, 'days').add(timezoneDiff, 'minutes').format('x'),
+						max: moment((d1.length > 0) ? d1.slice(-1)[0][0] : null).format('x'),
+						tickLength: 5
+					},
+					selection: {
+						mode: "x"
+					},
+					grid: {
+						color: "#D6D8DB",
+						tickColor: "rgba(255,255,255,0.05)",
+						borderWidth: 0,
+						clickable: true,
+						hoverable: true
+					}
+				};
 
-                var plot = $.plot(elem, [{
-                    data: d1,
-                    label: "Milliseconds"
-                }], options);
+				var plot = $.plot(elem, [{
+					data: d1,
+					label: "Milliseconds"
+				}], options);
 
-                // Create a tooltip on our chart
-                elem.qtip({
-                    prerender: true,
-                    content: 'Loading...', // Use a loading message primarily
-                    position: {
-                        viewport: $(window), // Keep it visible within the window if possible
-                        target: 'mouse', // Position it in relation to the mouse
-                        adjust: {
-                            x: 7
-                        } // ...but adjust it a bit so it doesn't overlap it.
-                    },
-                    show: false, // We'll show it programatically, so no show event is needed
-                    style: {
-                        classes: 'ui-tooltip-shadow ui-tooltip-tipsy',
-                        tip: false // Remove the default tip.
-                    }
-                });
+				// Create a tooltip on our chart
+				elem.qtip({
+					prerender: true,
+					content: 'Loading...', // Use a loading message primarily
+					position: {
+						viewport: $(window), // Keep it visible within the window if possible
+						target: 'mouse', // Position it in relation to the mouse
+						adjust: {
+							x: 7
+						} // ...but adjust it a bit so it doesn't overlap it.
+					},
+					show: false, // We'll show it programatically, so no show event is needed
+					style: {
+						classes: 'ui-tooltip-shadow ui-tooltip-tipsy',
+						tip: false // Remove the default tip.
+					}
+				});
 
-                // Bind the plot hover
-                elem.bind("plothover", function(event, coords, item) {
-                    // Grab the API reference
-                    var self = $(this),
-                        api = $(this).qtip(),
-                        previousPoint, content,
-                        // Setup a visually pleasing rounding function
-                        round = function(x) {
-                            return Math.round(x * 1000) / 1000;
-                        };
+				// Bind the plot hover
+				elem.bind("plothover", function(event, coords, item) {
+					// Grab the API reference
+					var self = $(this),
+						api = $(this).qtip(),
+						previousPoint, content,
+						// Setup a visually pleasing rounding function
+						round = function(x) {
+							return Math.round(x * 1000) / 1000;
+						};
 
-                    // If we weren't passed the item object, hide the tooltip and remove cached point data
-                    if (!item) {
-                        api.cache.point = false;
-                        return api.hide(event);
-                    }
+					// If we weren't passed the item object, hide the tooltip and remove cached point data
+					if (!item) {
+						api.cache.point = false;
+						return api.hide(event);
+					}
 
-                    // Proceed only if the data point has changed
-                    previousPoint = api.cache.point;
-                    if (previousPoint !== item.dataIndex) {
-                        // Update the cached point data
-                        api.cache.point = item.dataIndex;
+					// Proceed only if the data point has changed
+					previousPoint = api.cache.point;
+					if (previousPoint !== item.dataIndex) {
+						// Update the cached point data
+						api.cache.point = item.dataIndex;
 
-                        // Setup new content
-                        content = round(item.datapoint[1]) + ' milliseconds';
-                        //content = round(item.datapoint[1]) + ' miliseconds ' + moment(item.datapoint[0]).format("MMMM Do YYYY, HH:mm:ss");
+						// Setup new content
+						content = round(item.datapoint[1]) + ' milliseconds';
+						//content = round(item.datapoint[1]) + ' miliseconds ' + moment(item.datapoint[0]).format("MMMM Do YYYY, HH:mm:ss");
 
-                        // Update the tooltip content
-                        api.set('content.text', content);
+						// Update the tooltip content
+						api.set('content.text', content);
 
-                        // Make sure we don't get problems with animations
-                        api.elements.tooltip.stop(1, 1);
+						// Make sure we don't get problems with animations
+						api.elements.tooltip.stop(1, 1);
 
-                        // Show the tooltip, passing the coordinates
-                        api.show(coords);
-                    }
-                });
-                nowInSeconds = 1650881646;
-                nowInMiliSeconds = nowInSeconds * 1000;
-                timezoneDiffInMiliSeconds = 19800000;
-                timezonedNowInSeconds = nowInSeconds + 19800;
-                timezonedNowInMiliSeconds = timezonedNowInSeconds * 1000;
-                oneDayInSeconds = 24 * 60 * 60;
-                oneDayInMiliSeconds = 24 * 60 * 60 * 1000;
-                lastMonthStart = 1646112601000;
-                thisMonthStart = 1648791001000;
-                lastMonthEnd = 1648790999000;
+						// Show the tooltip, passing the coordinates
+						api.show(coords);
+					}
+				});
+				nowInSeconds = 1654771255;
+				nowInMiliSeconds = nowInSeconds * 1000;
+				timezoneDiffInMiliSeconds = 19800000;
+				timezonedNowInSeconds = nowInSeconds + 19800;
+				timezonedNowInMiliSeconds = timezonedNowInSeconds * 1000;
+				oneDayInSeconds = 24 * 60 * 60;
+				oneDayInMiliSeconds = 24 * 60 * 60 * 1000;
+				lastMonthStart = 1651383001000;
+				thisMonthStart = 1654061401000;
+				lastMonthEnd = 1654061399000;
 
-                $('#monitorDashboardRange').daterangepicker({
-                        ranges: {
-                            'Last 24 Hours': [timezonedNowInMiliSeconds - oneDayInMiliSeconds,
-                                timezonedNowInMiliSeconds
-                            ],
-                            'Last 7 Days': [timezonedNowInMiliSeconds - (oneDayInMiliSeconds * 7),
-                                timezonedNowInMiliSeconds
-                            ],
-                            'Last 30 Days': [timezonedNowInMiliSeconds - (oneDayInMiliSeconds * 30),
-                                timezonedNowInMiliSeconds
-                            ],
-                            'This Month': [thisMonthStart, timezonedNowInMiliSeconds],
-                            'Last Month': [lastMonthStart, lastMonthEnd]
-                        },
-                        timePicker: false,
-                        startDate: timezonedNowInMiliSeconds - oneDayInMiliSeconds,
-                        endDate: timezonedNowInMiliSeconds
-                    },
-                    function(start, end) {
-                        var chosenLabel = this.chosenLabel;
-                        if (chosenLabel.indexOf('Custom') >= 0) {
-                            $('.monitorDashboardRangeValue').html(start.format('MMM Do YY') +
-                                ' - ' + end.format('MMM Do YY'));
-                        } else {
-                            $('.monitorDashboardRangeValue').html(chosenLabel);
-                        }
+				$('#monitorDashboardRange').daterangepicker({
+						ranges: {
+							'Last 24 Hours': [timezonedNowInMiliSeconds - oneDayInMiliSeconds, timezonedNowInMiliSeconds],
+							'Last 7 Days': [timezonedNowInMiliSeconds - (oneDayInMiliSeconds * 7), timezonedNowInMiliSeconds],
+							'Last 30 Days': [timezonedNowInMiliSeconds - (oneDayInMiliSeconds * 30), timezonedNowInMiliSeconds],
+							'This Month': [thisMonthStart, timezonedNowInMiliSeconds],
+							'Last Month': [lastMonthStart, lastMonthEnd]
+						},
+						timePicker: false,
+						startDate: timezonedNowInMiliSeconds - oneDayInMiliSeconds,
+						endDate: timezonedNowInMiliSeconds
+					},
+					function(start, end) {
+						var chosenLabel = this.chosenLabel;
+						if (chosenLabel.indexOf('Custom') >= 0) {
+							$('.monitorDashboardRangeValue').html(start.format('MMM Do YY') + ' - ' + end.format('MMM Do YY'));
+						} else {
+							$('.monitorDashboardRangeValue').html(chosenLabel);
+						}
 
-                        $('#monitorChartsWrapper').css({
-                            opacity: 0.2
-                        });
-                        //Detect Exact timing
-                        exactValue = 1;
-                        if (chosenLabel == 'Last 7 Days' || chosenLabel == 'Last 30 Days') {
-                            exactValue = 0;
-                        }
+						$('#monitorChartsWrapper').css({
+							opacity: 0.2
+						});
+						//Detect Exact timing
+						exactValue = 1;
+						if (chosenLabel == 'Last 7 Days' || chosenLabel == 'Last 30 Days') {
+							exactValue = 0;
+						}
 
-                        if (chosenLabel == 'Last 24 Hours') {
-                            start = moment(1650795246000);
-                            end = moment(1650881646000);
-                        }
-
-                        $.ajax({
-                            type: "GET",
-                            url: "inc/dml/monitorDML.php?action=getResponseTimeInfo",
-                            data: {
-                                monitorID: 791148496,
-                                responseTimeStartDate: (exactValue) ? start.unix() : start
-                                    .startOf().unix(),
-                                responseTimeEndDate: (exactValue) ? end.unix() : end
-                                    .startOf().unix(),
-                            },
-                            success: function(theResponse) {
-                                d1NewResponseTimeSet = $.parseJSON(theResponse);
-
-                                if (d1NewResponseTimeSet.length > 0) {
-                                    totalResTime = 0;
-                                    for (i = 0; i < d1NewResponseTimeSet.length; i++) {
-                                        if (d1NewResponseTimeSet[i][1] > 0) {
-                                            totalResTime = totalResTime +
-                                                d1NewResponseTimeSet[i][1];
-                                        }
-                                    }
-                                    var averageResponseTime = totalResTime /
-                                        d1NewResponseTimeSet.length;
-                                } else {
-                                    var averageResponseTime = 0;
-                                }
-
-                                averageResponseTime = averageResponseTime.toFixed(2);
-                                $('#monitorChartsWrapper h3').find(
-                                    '.averageResponseTime').html(" (" +
-                                    averageResponseTime + "ms av.)");
-                                $('#monitorChartsWrapper .pagedesc').find(
-                                    '.averageResponseTimeDesc').html(
-                                    averageResponseTime);
-
-                                $('#monitorChartsWrapper').css({
-                                    opacity: 1
-                                });
-
-                                var startLine = (Array.isArray(d1NewResponseTimeSet)) ?
-                                    d1NewResponseTimeSet[0][0] : start;
-                                if (chosenLabel == 'Last 24 Hours') {
-                                    plot.getOptions().xaxes[0].min = moment().subtract(
-                                            1, 'days').add(timezoneDiff, 'minutes')
-                                        .format('x');
-                                } else {
-                                    plot.getOptions().xaxes[0].min = moment(startLine)
-                                        .add(timezoneDiff, 'minutes').format('x');
-                                }
-
-                                var endLine = (d1NewResponseTimeSet.slice(-1)[0] !=
-                                    undefined) ? d1NewResponseTimeSet.slice(-1)[0][
-                                    0
-                                ] : end;
-                                plot.getOptions().xaxes[0].max = moment(endLine).format(
-                                    'x');
-
-                                if (moment(end).diff(moment(start), 'days') >= 3) {
-                                    plot.getOptions().xaxes[0].timeformat = "%d %b";
-                                    if (moment(end).diff(moment(start), 'days') <= 6) {
-                                        plot.getOptions().xaxes[0].ticks = moment(end)
-                                            .diff(moment(start), 'days');
-                                    } else {
-                                        plot.getOptions().xaxes[0].ticks = 6;
-                                    }
-                                } else {
-                                    plot.getOptions().xaxes[0].timeformat = null;
-                                }
-
-                                plot.setData([{
-                                    data: $.parseJSON(theResponse),
-                                    label: "Milliseconds"
-                                }]);
-                                plot.setupGrid();
-                                plot.draw();
-                            }
-                        });
-                        var dayDiff = end.format('x') - start.format('x');
-                        dayDiff++
-                        rangeInDays = Math.floor(dayDiff / 86400000);
-                        if (chosenLabel.indexOf('Custom') != 0 && rangeInDays == 2) {
-                            rangeInDays = 1;
-                        }
-                        rangeInHours = rangeInDays * 24;
-                        rangeInSeconds = rangeInHours * 60 * 60;
-
-                        $.ajax({
-                            type: "GET",
-                            url: "inc/dml/monitorDML.php?action=getUptimeLine&monitorID=791148496&uptimeLineStartDate=" +
-                                rangeInHours + "&uptimeLineEndDate=" + end.format(
-                                    'YYYY-MM-DD'),
-                            success: function(theResponse) {
-                                $('#dashboardUptimeLine').html(theResponse);
-                                bindQtipUptimeChart();
-                                $('.uptimeRatioDateRange').html('(Calculating..)');
-
-                                uptimeRatio = $(
-                                        '#dashboardUptimeLine .uptimeHiddenRatio')
-                                    .html();
-                                $('.uptimeRatioDateRange').html('(' + uptimeRatio +
-                                    '%)');
-                            }
-                        });
-
-                    }
-                );
-
+            if (chosenLabel == 'Last 24 Hours') {
+              start = moment(1654684855000);
+              end = moment(1654771255000);
             }
-        };
 
-        dashboard_A_chart.chartVisit();
-        //alert(moment().add(timezoneDiff, 'minutes').format('x'));
+						$.ajax({
+							type: "GET",
+							url: "inc/dml/monitorDML.php?action=getResponseTimeInfo",
+							data: {
+								monitorID: 791938817,
+								responseTimeStartDate: (exactValue) ? start.unix() : start.startOf().unix(),
+								responseTimeEndDate: (exactValue) ? end.unix() : end.startOf().unix(),
+							},
+							success: function(theResponse) {
+								d1NewResponseTimeSet = $.parseJSON(theResponse);
 
-        getIncidents(791148496, undefined, undefined, undefined, undefined, false);
+								if (d1NewResponseTimeSet.length > 0) {
+									totalResTime = 0;
+									for (i = 0; i < d1NewResponseTimeSet.length; i++) {
+										if (d1NewResponseTimeSet[i][1] > 0) {
+											totalResTime = totalResTime + d1NewResponseTimeSet[i][1];
+										}
+									}
+									var averageResponseTime = totalResTime / d1NewResponseTimeSet.length;
+								} else {
+									var averageResponseTime = 0;
+								}
 
-    });
-    /*Response Time Chart - END*/
+								averageResponseTime = averageResponseTime.toFixed(2);
+								$('#monitorChartsWrapper h3').find('.averageResponseTime').html(" (" + averageResponseTime + "ms av.)");
+								$('#monitorChartsWrapper .pagedesc').find('.averageResponseTimeDesc').html(averageResponseTime);
+
+								$('#monitorChartsWrapper').css({
+									opacity: 1
+								});
+
+								var startLine = (Array.isArray(d1NewResponseTimeSet)) ? d1NewResponseTimeSet[0][0] : start;
+								if (chosenLabel == 'Last 24 Hours') {
+									plot.getOptions().xaxes[0].min = moment().subtract(1, 'days').add(timezoneDiff, 'minutes').format('x');
+								} else {
+									plot.getOptions().xaxes[0].min = moment(startLine).add(timezoneDiff, 'minutes').format('x');
+								}
+
+								var endLine = (d1NewResponseTimeSet.slice(-1)[0] != undefined) ? d1NewResponseTimeSet.slice(-1)[0][0] : end;
+								plot.getOptions().xaxes[0].max = moment(endLine).format('x');
+
+								if (moment(end).diff(moment(start), 'days') >= 3) {
+									plot.getOptions().xaxes[0].timeformat = "%d %b";
+									if (moment(end).diff(moment(start), 'days') <= 6) {
+										plot.getOptions().xaxes[0].ticks = moment(end).diff(moment(start), 'days');
+									} else {
+										plot.getOptions().xaxes[0].ticks = 6;
+									}
+								} else {
+									plot.getOptions().xaxes[0].timeformat = null;
+								}
+
+								plot.setData([{
+									data: $.parseJSON(theResponse),
+									label: "Milliseconds"
+								}]);
+								plot.setupGrid();
+								plot.draw();
+							}
+						});
+						var dayDiff = end.format('x') - start.format('x');
+						dayDiff++
+						rangeInDays = Math.floor(dayDiff / 86400000);
+						if (chosenLabel.indexOf('Custom') != 0 && rangeInDays == 2) {
+							rangeInDays = 1;
+						}
+						rangeInHours = rangeInDays * 24;
+						rangeInSeconds = rangeInHours * 60 * 60;
+
+						$.ajax({
+							type: "GET",
+							url: "inc/dml/monitorDML.php?action=getUptimeLine&monitorID=791938817&uptimeLineStartDate=" + rangeInHours + "&uptimeLineEndDate=" + end.format('YYYY-MM-DD'),
+							success: function(theResponse) {
+								$('#dashboardUptimeLine').html(theResponse);
+								bindQtipUptimeChart();
+								$('.uptimeRatioDateRange').html('(Calculating..)');
+
+								uptimeRatio = $('#dashboardUptimeLine .uptimeHiddenRatio').html();
+								$('.uptimeRatioDateRange').html('(' + uptimeRatio + '%)');
+							}
+						});
+
+					}
+				);
+
+			}
+		};
+
+		dashboard_A_chart.chartVisit();
+		//alert(moment().add(timezoneDiff, 'minutes').format('x'));
+
+  getIncidents(791938817, undefined, undefined, undefined, undefined, false);
+
+	});
+	/*Response Time Chart - END*/
 
 
-    /*Uptime Chart - START*/
-    function bindQtipUptimeChart() {
-        $('.uptimeChart li').qtip({
-            content: {
-                attr: 'data-tooltip'
-            },
-            position: {
-                my: 'bottom right', // Position my top left...
-                at: 'top right', // at the bottom right of...
-            },
-            style: {
-                classes: 'ui-tooltip-shadow ui-tooltip-tipsy'
-            }
-        })
-    }
+	/*Uptime Chart - START*/
+	function bindQtipUptimeChart() {
+		$('.uptimeChart li').qtip({
+			content: {
+				attr: 'data-tooltip'
+			},
+			position: {
+				my: 'bottom right', // Position my top left...
+				at: 'top right', // at the bottom right of...
+			},
+			style: {
+				classes: 'ui-tooltip-shadow ui-tooltip-tipsy'
+			}
+		})
+	}
 
-    function phpLikeRound(number, precision) {
-        var factor = Math.pow(10, precision);
-        var tempNumber = number * factor;
-        var roundedTempNumber = Math.round(tempNumber);
-        return roundedTempNumber / factor;
-    };
-    bindQtipUptimeChart();
-    /*Uptime Chart - END*/
+	function phpLikeRound(number, precision) {
+		var factor = Math.pow(10, precision);
+		var tempNumber = number * factor;
+		var roundedTempNumber = Math.round(tempNumber);
+		return roundedTempNumber / factor;
+	};
+	bindQtipUptimeChart();
+	/*Uptime Chart - END*/
 </script> --}}
-
-
 <section>
     <div class="margin-top20">
         <div class="well well-black">
@@ -398,13 +317,21 @@
                     <input type="hidden" id="dashboardMonitorID" value="791148496">
                     <h3><i class="fontello-icon-chart-bar-3"></i> Uptime
                         <small>last 24 hours</small>
+                        {{-- {{dd($data)}} --}}
+
                     </h3>
                     <div id="dashboardUptimeLine">
                         <div class="uptimeHiddenRatio" style="display:none;">50.000</div>
                         <ul class="uptimeChart">
-                            <li data-tooltip="Start Time: 2022-04-18 01:32:17<br>End Time: 2022-04-25 15:44:06<br>Duration: 182 hrs, 11 mins<br>Status: Up"
-                                style="width: 100%; background:#4da74d;"><img
-                                    src="{{ asset('userside/assets/img/1px.webp') }}" alt="1px"></li>
+                            @if ($data['status'] == 0)
+                                <li data-tooltip="Start Time:   {{ \Carbon\Carbon::parse($data['created_at'])->format('Y-m-d h:m:s') }}<br>End Time: 2022-04-25 15:44:06<br>Duration: 182 hrs, 11 mins<br>Status: Up"
+                                    style="width: 100%; background:#ba3737;"><img
+                                        src="{{ asset('userside/assets/img/1px.webp') }}" alt="1px"></li>
+                            @else
+                                <li data-tooltip="Start Time:   {{ \Carbon\Carbon::parse($data['created_at'])->format('Y-m-d h:m:s') }}<br>End Time: 2022-04-25 15:44:06<br>Duration: 182 hrs, 11 mins<br>Status: Up"
+                                    style="width: 100%; background:#4da74d;"><img
+                                        src="{{ asset('userside/assets/img/1px.webp') }}" alt="1px"></li>
+                            @endif
                         </ul>
                     </div>
                     <hr class="margin-mx-extended">
@@ -413,11 +340,11 @@
                         <div id="exportLogNotification" class="no-margin"></div>
                         <h3 class="margin-top25"><i class="fontello-icon-chart-line"></i> Response Time
                             <small>last 24 hours</small>
-                            <small class="averageResponseTime"> (230.69ms av.)</small>
+                            <small class="averageResponseTime"> ({{ $data['response_time'] }}ms av.)</small>
                         </h3>
                         <p class="pagedesc">Shows the "instant" that the monitor started returning a response in
                             ms (and average for the displayed period is <span
-                                class="averageResponseTimeDesc">230.69</span>ms).</p>
+                                class="averageResponseTimeDesc">{{ $data['response_time'] }}</span>ms).</p>
                         <p id="legendContainer">
                         <table style="font-size:smaller;color:#D6D8DB">
                             <tbody>
@@ -481,75 +408,56 @@
                         </div>
 
 
-
-
                     </div>
-                    {{-- <div class="">
 
-                        <div id="exportLogNotification" class="no-margin"></div>
-                        <h3 class="margin-top25"><i class="fontello-icon-chart-line"></i> Response Time
-                            <small>last 24 hours</small>
-                            <small class="averageResponseTime"></small>
-                        </h3>
-                        <p class="pagedesc">Shows the "instant" that the monitor started returning a response in
-                            ms (and average for the displayed period is <span
-                                class="averageResponseTimeDesc"></span>ms).</p>
-                        <p id="legendContainer"></p>
-                        <hr class="margin-mx">
-                        <div id="dashChartResponseTimes" style="width:100%; height:170px" class="margin-bottom32">
-                        </div>
-
-                    </div> --}}
                 </div>
+
 
                 <div id="monitorDashboardSideInfo" class="span4 grider">
                     <div class="row-fluid">
                         <div class="span12 grider-item">
-                            <div id="monitorCurrentStatus" class="row-fluid">
-                                <div class="span12 grider-item">
-                                    <div class="statistic-box well well-black well-impressed">
-                                        <div class="section-title">
-                                            <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
-                                                Current Status</h5>
-                                        </div>
-                                        <div id="monitorCurrentStatusContent" class="section-content">
-                                            <h2 class="statistic-values">
-                                                <span class="item-icon fontello-icon-cd" style="color:#4da74d;">
-                                                    Up
-                                                </span>
-                                            </h2><span class="info-block">Since 182 hrs, 11 mins (2022-04-18
-                                                01:32:17)</span>
+                            @if ($data['status'] == 0)
+                                <div id="monitorCurrentStatus" class="row-fluid">
+                                    <div class="span12 grider-item">
+                                        <div class="statistic-box well well-black well-impressed">
+                                            <div class="section-title">
+                                                <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
+                                                    Current Status</h5>
+                                            </div>
+                                            <div id="monitorCurrentStatusContent" class="section-content">
+                                                <h2 class="statistic-values">
+                                                    <span class="item-icon fontello-icon-cd" style="color:#ba3737;;">
+                                                        Down
+                                                    </span>
+                                                </h2><span class="info-block">Since
+                                                    {{ $data['latestDownTime'][0]['totaltime'] }} (
+                                                    {{ $data['latestDownTime'][0]['created_at'] }})</span>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                            @else
+                                <div id="monitorCurrentStatus" class="row-fluid">
+                                    <div class="span12 grider-item">
+                                        <div class="statistic-box well well-black well-impressed">
+                                            <div class="section-title">
+                                                <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
+                                                    Current Status</h5>
+                                            </div>
+                                            <div id="monitorCurrentStatusContent" class="section-content">
+                                                <h2 class="statistic-values">
+                                                    <span class="item-icon fontello-icon-cd" style="color:#4da74d;">
+                                                        Up
+                                                    </span>
+                                                </h2><span class="info-block">Since
+                                                    {{ $data['current_status'][0]['totaltime'] }}
+                                                    ({{ $data['current_status'][0]['created_at'] }})</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
 
-                                </div>
-                            </div>
-                            <div class="dropdown" id="test-notif-dropdown-container">
-                                <button type="button" class="btn btn-blue margin-bottom20 dropdown-toggle"
-                                    style="width: 100%;" id="test-notif-btn" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="true" data-monitor-id="791148496">
-                                    Test notification setup
-                                    <span class="caret"></span>
-                                </button>
-                                <div id="test-notif-dropdown" class="dropdown-menu" aria-labelledby="test-notif-btn">
-                                    <div class="row-fluid">
-                                        <div class="col-md-8">
-                                            <h5>Attached alert contacts</h5>
-                                        </div>
-                                        <div class="col-md-4 text-right">
-                                            <span class="label label-warning">BETA</span>
-                                        </div>
-                                    </div>
-                                    {{-- <div id="test-notif-monitors">Loading...</div> --}}
-                                    <div style="color: #75788b"><small>Can't see your alert contact here? <a
-                                                href="#editMonitor" data-toggle="modal" data-monitorid="791148496"
-                                                class="editMonitor">Attach it here</a>.</small></div>
-                                    <button type="button" class="btn btn-success margin-top20" style="width:100%"
-                                        disabled id="test-notif-btn-init-test">
-                                        Send test notifications
-                                    </button>
-                                </div>
-                            </div>
                             <div id="monitorRatios" class="row-fluid">
                                 <div class="span12 grider-item">
                                     <div class="statistic-box well well-black">
@@ -559,25 +467,28 @@
                                         <div class="section-content item">
                                             <h4 class="statistic-values pull-left padding-right10 positive"> <span
                                                     class="section-icon"><i
-                                                        class="fontello-icon-certificate"></i></span> 100.000%</h4>
+                                                        class="fontello-icon-certificate"></i></span>{{ $data['userLogsHours'] }}%
+                                            </h4>
                                             <span> (last 24 hours)</span>
                                         </div>
                                         <div class="section-content">
                                             <h4 class="statistic-values pull-left padding-right10 positive"> <span
                                                     class="section-icon"><i
-                                                        class="fontello-icon-certificate"></i></span> 100.000%</h4>
+                                                        class="fontello-icon-certificate"></i></span>
+                                                {{ $data['userLogs7Days'] }} %</h4>
                                             <span> (last 7 days)</span>
                                         </div>
                                         <div class="section-content">
                                             <h4 class="statistic-values pull-left padding-right10 positive"> <span
                                                     class="section-icon"><i
-                                                        class="fontello-icon-certificate"></i></span> 97.406%</h4>
+                                                        class="fontello-icon-certificate"></i></span>
+                                                {{ $data['userLogs30Days'] }} %</h4>
                                             <span> (last 30 days)</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row-fluid">
+                            <div id="accountLastDowntime" class="row-fluid">
                                 <div class="span12 grider-item">
                                     <div class="statistic-box well well-black well-impressed">
                                         <div class="section-title">
@@ -585,9 +496,20 @@
                                                     class="item-icon fontello-icon-cd negative"></i> <span
                                                     class="negative">Latest downtime</span></h5>
                                         </div>
-                                        <div class="section-content">
-                                            It was recorded on 2022-04-17 10:35:18 and the downtime lasted for 14 hrs,
-                                            56 mins. </div>
+                                        <div class="section-content" id="accountLastDowntimeContent">
+                                            @isset($data['latestDownTime'][0]['created_at'])
+                                                It was recorded (for the monitor
+                                                {{ $data['latestDownTime'][0]['monitor']['friendly_name'] }} ) on
+                                                {{ $data['latestDownTime'][0]['created_at'] }}
+                                                and
+                                                the downtime lasted for
+                                                {{ $data['latestDownTime'][0]['totaltime'] }}.
+                                            @else
+                                                No downtime recorded.
+                                            @endisset
+
+
+                                        </div>
                                     </div>
 
                                 </div>
@@ -854,66 +776,94 @@
                             <tr>
                                 <th scope="col" width="20%">Event</th>
                                 <th scope="col">Date-Time</th>
-                                <th scope="col" width="1%"></th>
+
                                 <th scope="col">Reason</th>
                                 <th scope="col" width="20%">Duration</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th><span class="label label-positive"><i class="fontello-icon-up-thin"></i> Up </span>
-                                </th>
-                                <td>2022-04-18 01:32:17</td>
-                                <td></td>
-                                <td class="positive bold">OK (200)</td>
-                                <td>182 hrs, 11 mins</td>
-                            </tr>
-                            <tr>
-                                <th><span class="label label-negative"><i class="fontello-icon-down-thin"></i> Down
-                                    </span></th>
-                                <td>2022-04-17 10:35:18</td>
-                                <td></td>
-                                <td class="negative bold">Connection Timeout (429)</td>
-                                <td>14 hrs, 56 mins</td>
-                            </tr>
-                            <tr>
-                                <th><span class="label label-positive"><i class="fontello-icon-up-thin"></i> Up </span>
-                                </th>
-                                <td>2022-04-17 05:12:25</td>
-                                <td></td>
-                                <td class="positive bold">OK (200)</td>
-                                <td>5 hrs, 22 mins</td>
-                            </tr>
-                            <tr>
-                                <th><span class="label label-negative"><i class="fontello-icon-down-thin"></i> Down
-                                    </span></th>
-                                <td>2022-04-17 01:28:35</td>
-                                <td></td>
-                                <td class="negative bold">Connection Timeout (429)</td>
-                                <td>3 hrs, 43 mins</td>
-                            </tr>
-                            <tr>
-                                <th><span class="label label-positive"><i class="fontello-icon-up-thin"></i> Up
-                                    </span>
-                                </th>
-                                <td>2022-03-25 11:02:33</td>
-                                <td></td>
-                                <td class="positive bold">OK (200)</td>
-                                <td>542 hrs, 26 mins</td>
-                            </tr>
-                            <tr>
-                                <th><span class="label label-play"><i class="fontello-icon-play-3"></i> Started
-                                    </span>
-                                </th>
-                                <td>2022-03-25 11:01:56</td>
-                                <td></td>
-                                <td class="play bold">Started</td>
-                                <td>0 hrs, 0 mins</td>
-                            </tr>
+                            @if (empty($data['record']))
+                                <td colspan="4">No events recorded.</td>
+                            @else
+                                @foreach ($data['record'] as $row)
+                                    <tr>
+
+                                        @if ($row['status'] == 'Start')
+                                            <td>
+                                                <span class="label label-play"><i class="fontello-icon-play-3"></i>
+                                                    Started
+                                                </span>
+                                            </td>
+                                        @endif
+                                        @if ($row['status'] == 'Pause')
+                                            <td>
+                                                <span class="label label-pause"><i class="fontello-icon-pause-1"></i>
+                                                    Paused
+                                                </span>
+                                            </td>
+                                        @endif
+
+                                        @if ($row['status'] == 'Up')
+                                            <td>
+                                                <span class="label label-positive"><i class="fontello-icon-up-tdin"></i>
+                                                    Up
+                                                </span>
+                                            </td>
+                                        @endif
+                                        @if ($row['status'] == 'Down')
+                                            <td>
+                                                <span class="label label-negative"><i
+                                                        class="fontello-icon-down-tdin"></i>
+                                                    Down
+                                                </span>
+                                            </td>
+                                        @endif
+
+
+
+                                        <td>{{ \Carbon\Carbon::parse($row['created_at'])->format('Y-m-d h:m:s') }}
+                                        </td>
+
+
+
+                                        @if ($row['status'] == 'Start')
+                                            <td class="play bold">Started</td>
+                                        @endif
+                                        @if ($row['status'] == 'Pause')
+                                            <td class="pause bold">Paused</td>
+                                        @endif
+
+                                        @if ($row['status'] == 'Up')
+                                            <td class="positive bold">OK (200)</td>
+                                        @endif
+                                        @if ($row['status'] == 'Down')
+                                            <td class="negative bold">Connection Timeout (429)</td>
+                                        @endif
+
+
+                                        <td width="20%">
+                                            @if ($row['status'] == 'Start')
+                                                {{ $row['totaltime'] }}
+                                            @endif
+                                            @if ($row['status'] == 'Pause')
+                                                {{ $row['totaltime'] }}
+                                            @endif
+
+                                            @if ($row['status'] == 'Up')
+                                                {{ $row['totaltime'] }}
+                                            @endif
+                                            @if ($row['status'] == 'Down')
+                                                {{ $row['totaltime'] }}
+                                            @endif
+
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
-                    <input type="hidden" value="10" class="latestEventsLimit">
-                    <div id="alertLogDetails" class="modal hide fade in" tabindex="-1" data-toggle="true"></div>
+                  
                 </div>
             </div>
         </div>

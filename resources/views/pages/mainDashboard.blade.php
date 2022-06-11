@@ -282,11 +282,10 @@
                                             @isset($data['latestDownTime'][0]['created_at'])
                                                 It was recorded (for the monitor
                                                 {{ $data['latestDownTime'][0]['monitor']['friendly_name'] }} ) on
-                                                {{ \Carbon\Carbon::parse($data['latestDownTime'][0]['created_at'])->format('Y/m/d h:m:s') }}
+                                                {{ $data['latestDownTime'][0]['created_at'] }}
                                                 and
                                                 the downtime lasted for
-                                                {{ round(\Carbon\Carbon::now()->diffInHours($data['latestDownTime'][0]['created_at'], true)) }}
-                                                hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($data['latestDownTime'][0]['created_at'], true) / 3600) }}mins.
+                                                {{ $data['latestDownTime'][0]['totaltime'] }}.
                                             @else
                                                 No downtime recorded.
                                             @endisset
@@ -328,45 +327,80 @@
                             <th scope="col" width="20%">Duration</th>
                         </tr>
                     </thead>
-                    <tr>
-                        @if (empty($data['latestDownTime']))
-                            <td colspan="4">No events recorded.</td>
-                        @else
-                            @foreach ($data['record'] as $row)
-                    <tr data-monitorid="{{ $row['monitor']['id'] }}">
-                        <td width="13%">
-                            {{-- {{ dd($row) }} --}}
-                            @if ($row['status'] == 'Up')
-                                <span class="label label-positive">
-                                        {{ $row['status'] }} </span> 
+                    <tbody>
+                        <tr>
+                            @if (empty($data['record']))
+                                <td colspan="4">No events recorded.</td>
+                            @else
+                                @foreach ($data['record'] as $row)
+                                    <tr data-monitorid="{{ $row['monitor']['id'] }}">
+                                        <td width="13%">
+                                            {{-- {{ dd($row) }} --}}
+                                            @if ($row['status'] == 'Up')
+                                                <span class="label label-positive">
+                                                    {{ $row['status'] }} </span>
+                                            @endif
+                                            @if ($row['status'] == 'Down')
+                                                <span class="label label-negative"> {{ $row['status'] }}
+                                                </span>
+                                            @endif
+
+                                            @if ($row['status'] == 'Start')
+                                                <span class="label label-play">Started</span>
+                                            @endif
+
+                                            @if ($row['status'] == 'Pause')
+                                                <span class="label label-pause">Paused</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a class="loadMonitor text-color underlineLink"
+                                                title="{{ $row['monitor']['url_ip'] }}">
+                                                {{ $row['monitor']['friendly_name'] }}</a>
+                                        </td>
+
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($row['created_at'])->format('Y-m-d h:m:s') }}
+
+                                        </td>
+
+                                            @if ($row['status'] == 'Up')
+                                                <td class="positive bold">OK (200)</td>
+                                            @endif
+                                            @if ($row['status'] == 'Down')
+                                                <td class="negative bold">Connection Timeout</td>
+                                            @endif
+                                            @if ($row['status'] == 'Start')
+                                                <td class="play bold">Started</td>
+                                            @endif
+                                            @if ($row['status'] == 'Pause')
+                                                <td class="pause bold">Paused</td>
+                                            @endif
+
+
+
+                                            <td width="20%">
+                                                @if ($row['status'] == 'Start')
+                                                {{$row['totaltime'] }}
+                                                @endif
+                                                @if ($row['status'] == 'Pause')
+                                                {{$row['totaltime'] }}
+                                                @endif
+
+                                                @if ($row['status'] == 'Up')
+                                                    {{$row['totaltime'] }}
+                                                @endif
+                                                @if ($row['status'] == 'Down')
+                                                       {{$row['totaltime'] }}
+                                                @endif
+
+                                            </td>
+                                    </tr>
+                                @endforeach
                             @endif
-                            @if ($row['status'] == 'Down')
-                                <span class="label label-negative"> {{ $row['status'] }}
-                                </span>
-                            @endif
+                        </tr>
+                    </tbody>
 
-                        </td>
-                        <td>
-                            <a class="loadMonitor text-color underlineLink"
-                            title="{{ $row['monitor']['url_ip'] }}">
-                            {{ $row['monitor']['friendly_name'] }}</a>
-                        </td>   
-
-                        <td>
-                            {{ $row['created_at'] }}
-                        </td>
-                        <td class="positive bold">OK (200)</td>
-                        <td width="20%">
-                            {{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'], true)) }}
-                            hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'], true) / 3600) }}mins.
-                        </td>
-
-
-                    </tr>
-                    @endforeach
-                    @endif
-
-                    </tr>
                 </table>
             </div>
         </div>
