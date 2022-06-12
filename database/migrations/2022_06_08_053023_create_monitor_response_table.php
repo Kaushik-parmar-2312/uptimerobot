@@ -16,7 +16,7 @@ class CreateMonitorResponseTable extends Migration
         Schema::create('monitor_response', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('monitor_id');
-            $table->foreign('monitor_id')->references('id')->on('monitors')->nullable();
+             $table->foreign('monitor_id')->references('id')->on('monitors')->nullable();
             $table->string('response_time')->nullable();
             $table->timestamps();
         });
