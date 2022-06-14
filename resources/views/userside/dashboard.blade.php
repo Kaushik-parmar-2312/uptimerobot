@@ -230,7 +230,7 @@
                                                      <li data-tooltip="
                                                                              Start Time: {{ \Carbon\Carbon::parse($row['created_at'])->format('Y/m/d h:m:s') }}<br>
                                                                              End Time: {{ \Carbon\Carbon::now() }}  <br>
-                                                                             Duration:{{ round(\Carbon\Carbon::now()->diffInHours($row['created_at'], true)) }} hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'], true) / 3600) }} mins<br>
+                                                                             Duration:{{ round(\Carbon\Carbon::now()->diffInHours( \Carbon\Carbon::parse($row['created_at'])->format('Y-m-d H:i:s'), true)) }} hrs,{{ round(\Carbon\Carbon::now()->diffInMinutes($row['created_at'], true) / 3600) }} mins<br>
                                                                             Status: Down"
                                                          style="width: 100%; background:#ba3737;">
                                                          <img src="{{ asset('userside/assets/img/1px.webp') }}"

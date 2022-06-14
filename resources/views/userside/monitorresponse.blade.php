@@ -451,7 +451,9 @@
                                                     </span>
                                                 </h2><span class="info-block">Since
                                                     {{ $data['current_status'][0]['totaltime'] }}
-                                                    ({{ $data['current_status'][0]['created_at'] }})</span>
+                                                    ({{ 
+                                                \Carbon\Carbon::parse($data['current_status'][0]['created_at'])->format('Y-m-d h:m:s')
+                                                }})</span>
                                             </div>
                                         </div>
                                     </div>

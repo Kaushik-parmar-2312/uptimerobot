@@ -19,8 +19,14 @@ class IsAdmin
         if(auth()->user()->is_admin == 1){
             return $next($request);
         }
+        elseif(auth()->user()->is_admin == 0){
+            return redirect('/dashboard');
+        }
+        else{
+            return redirect('/')->with('error',"You don't have admin access.");
+        }
    
         
-        return redirect('home')->with('error',"You don't have admin access.");
+        
     }
 }

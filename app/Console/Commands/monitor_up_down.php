@@ -52,6 +52,7 @@ class monitor_up_down extends Command
         } else {
             
             foreach ($monitorslist as $mt) {
+                $timeout = Carbon::parse($mt['timeout'])->format('s');
 
                 if ($mt["monitor_type_id"] == 1) {
                     $monitorslist_type = monitors::where('pause', '0')->where('monitor_type_id', '1')->with('monitorcontact.contact')->get()->toArray();

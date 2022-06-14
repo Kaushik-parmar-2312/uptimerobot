@@ -486,7 +486,7 @@ class monitors_controller extends Controller
 
         $data['current_status'] = UserLogModel::where('monitor_id', $id)->with('monitor')->whereHas('monitor', function ($q) {
             $q->where('user_id', auth()->user()->id);
-        })->where('created_at', '>=', $cur)->selectRaw('logs.*')->orderby('logs.created_at', 'desc')->limit(1)->get()->toArray();
+        })->selectRaw('logs.*')->orderby('logs.created_at', 'desc')->limit(1)->get()->toArray();
 
         //    dd( 'ss',$data['current_status']);
 
@@ -538,6 +538,7 @@ class monitors_controller extends Controller
                     $interval = $time1->diff($time2);
                     $duration = $interval->h . " hrs," . $interval->i . " mins";
                     $data['current_status'][0]['totaltime'] = $duration;
+                   //  dd($data['current_status'][0]);
                 } else {
                     $m_id = $data['current_status'][0]['monitor_id'];
                     $log_id = $data['current_status'][0]['id'];
@@ -566,7 +567,7 @@ class monitors_controller extends Controller
             $data['current_status'] = [];
         }
 
-        $data['current_status'][0]['created_at'] = \Carbon\Carbon::parse($data['current_status'][0]['created_at'])->format('Y-m-d h:m:s');
+       // $data['current_status'][0]['created_at'] = \Carbon\Carbon::parse($data['current_status'][0]['created_at'])->format('Y-m-d h:m:s');
         //   dd( $data['current_status'][0]['created_at']);
 
         //Latesest Down Time
@@ -607,8 +608,9 @@ class monitors_controller extends Controller
 
         $data['record'] = UserLogModel::with('monitor')->whereHas('monitor', function ($q) {
             $q->where('user_id', auth()->user()->id);
-        })->where('created_at', '>=', $cur)->where('monitor_id', '=', $id)->selectRaw('logs.*')->where('status', '!=', 'Pause')->orderby('logs.created_at', 'desc')->limit(10)->get()->toArray();
+        })->where('created_at', '<=', $cur)->where('monitor_id', '=', $id)->selectRaw('logs.*')->where('status', '!=', 'Pause')->orderby('logs.created_at', 'desc')->limit(10)->get()->toArray();
 
+        //  dd($data['record']);
         foreach ($data['record'] as $key => $value) {
             if ($value['status'] == "Down") {
 
@@ -658,7 +660,7 @@ class monitors_controller extends Controller
                     $interval_time_down = new DateTime($value['created_at']);
                     $latest_down = Carbon::parse($interval_time_down)->format('Y-m-d H:i:s');
 
-                    $time1 = new DateTime($latest_up);
+                    $time1 = new DateTime();
                     $time2 = new DateTime($latest_down);
                     $interval = $time1->diff($time2);
 
@@ -702,7 +704,8 @@ class monitors_controller extends Controller
                 $data['record'][$key]['totaltime'] = $duration;
             }
         }
-        $data['record'][0]['created_at'] = \Carbon\Carbon::parse($data['record'][0]['created_at'])->format('Y-m-d h:m:s');
+      //  dd($data);
+        //$data['record'][0]['created_at'] = \Carbon\Carbon::parse($data['record'][0]['created_at'])->format('Y-m-d h:m:s');
 
         return view('userside.monitorresponse', compact('data'));
     }
@@ -1052,7 +1055,7 @@ class monitors_controller extends Controller
             $q->where('user_id', auth()->user()->id);
         })->where('created_at', '>=', $cur)->selectRaw('logs.*')->where('status', '!=', 'Pause')->orderby('logs.created_at', 'desc')->limit(10)->get()->toArray();
 
-        // dd($data['record']);
+        //  dd($data['record']);
 
         foreach ($data['record'] as $key => $value) {
             if ($value['status'] == "Down") {

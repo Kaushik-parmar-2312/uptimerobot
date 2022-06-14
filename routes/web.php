@@ -38,6 +38,18 @@ Route::get('/LR', function () {
 });
 
 Auth::routes();
+
+
+
+Route::get('admin/dashboard', [HomeController::class, 'adminHome'])->name('admin.dashboard')->middleware('is_admin');
+
+// Route::get('admin/', [admin_controller::class, 'get_admin'])->name('monitor.startpausemonitor');
+Route::get('admin/users', [admin_controller::class, 'get_details'])->name('monitor.startpausemonitor');
+Route::get('admin/contact_details', [admin_controller::class, 'get_contact_details'])->name('monitor.startpausemonitor');
+Route::get('admin/monitor_type', [admin_controller::class, 'get_monitorType_details'])->name('monitor.startpausemonitor');
+Route::get('admin/monitor', [admin_controller::class, 'get_monitor_details'])->name('monitor.startpausemonitor');
+ 
+//userside dashbord
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 //userside  route
@@ -82,12 +94,4 @@ Route::get('/statuspage', function () {
     Route::get('/getMonitors', [monitors_controller::class, 'getMonitors'])->name('monitor.getMonitors');
     Route::get('/sortmoniting/{sortmonitor}', [monitors_controller::class, 'sortmonitring'])->name('monitor.sortmonitring');
 
-
-    Route::get('admin/dashboard', [HomeController::class, 'adminHome'])->name('admin.dashboard')->middleware('is_admin');
-
-    Route::get('admin/', [admin_controller::class, 'get_admin'])->name('monitor.startpausemonitor');
-    Route::get('admin/users', [admin_controller::class, 'get_details'])->name('monitor.startpausemonitor');
-    Route::get('admin/contact_details', [admin_controller::class, 'get_contact_details'])->name('monitor.startpausemonitor');
-    Route::get('admin/monitor_type', [admin_controller::class, 'get_monitorType_details'])->name('monitor.startpausemonitor');
-    Route::get('admin/monitor', [admin_controller::class, 'get_monitor_details'])->name('monitor.startpausemonitor');
 

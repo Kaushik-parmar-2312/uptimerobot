@@ -25,55 +25,65 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
+     * {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
 
-        $d = monitors::leftjoin('users', 'monitors.user_id', '=', 'users.id')
-            ->leftjoin('monitor_types', 'monitor_types.id', '=', 'monitors.monitor_type_id')
-            ->where('monitors.user_id', auth()->user()->id)->orderBy('friendly_name', 'desc')
-            ->get(['monitors.*', 'monitor_types.monitor_type'])->toArray();
-        if (empty($d)) {
-            $data[] = $d;
-        } else {
+        if (auth()->user()->is_admin == 0) {
+            $d = monitors::leftjoin('users', 'monitors.user_id', '=', 'users.id')
+                ->leftjoin('monitor_types', 'monitor_types.id', '=', 'monitors.monitor_type_id')
+                ->where('monitors.user_id', auth()->user()->id)->orderBy('friendly_name', 'desc')
+                ->get(['monitors.*', 'monitor_types.monitor_type'])->toArray();
+            if (empty($d)) {
+                $data[] = $d;
+            } else {
 
-            foreach ($d as $row) {
-                $monitor_id = $row['id'];
-                $total = UserLogModel::where('monitor_id', $monitor_id)->where('status', '!=', "")->where('status', '!=', "Pause")->where('created_at', '<=', Carbon::now()->subDay(1)->toDateTimeString())->count();
-              
-                $totalUpMonitors = UserLogModel::where('status', 'Up')->where('monitor_id', $monitor_id)->where('created_at', '<=', Carbon::now()->subDay(1)->toDateTimeString())->count();
-                
-                if ($total != 0) {
-                    $row['userLogsHours'] = round((($totalUpMonitors * 100) / $total), 2);
-                    // echo "<pre>";print_r($row);
-                } else {
-                    if ($total == 0) {
-                        $row['userLogsHours'] = 0;
+                foreach ($d as $row) {
+                    $monitor_id = $row['id'];
+                    $total = UserLogModel::where('monitor_id', $monitor_id)->where('status', '!=', "")->where('status', '!=', "Pause")->where('created_at', '<=', Carbon::now()->subDay(1)->toDateTimeString())->count();
+
+                    $totalUpMonitors = UserLogModel::where('status', 'Up')->where('monitor_id', $monitor_id)->where('created_at', '<=', Carbon::now()->subDay(1)->toDateTimeString())->count();
+
+                    if ($total != 0) {
+                        $row['userLogsHours'] = round((($totalUpMonitors * 100) / $total), 2);
+                        // echo "<pre>";print_r($row);
                     } else {
-                        $row['userLogsHours'] = 100;
+                        if ($total == 0) {
+                            $row['userLogsHours'] = 0;
+                        } else {
+                            $row['userLogsHours'] = 100;
+                        }
+
                     }
-
+                    // echo "<pre>";print_r($row);
+                    $data[] = $row;
                 }
-                // echo "<pre>";print_r($row);
-                $data[] = $row;
             }
-        }
-        // dd($data);
+            // dd($data);
 
-        return view('userside.dashboard', compact('data'));
+            return view('userside.dashboard', compact('data'));
+        }else{
+            return "please login to admin controller";
+        }
+
     }
     public function adminHome()
     {
-        
-        $user = User::all();
-        $monitor_type = monitor_type::all();
-        $monitor = monitors::all();
-        $Monitor_response = Monitor_response::all();
-        $mType = monitor_type::all();
+      
+        if (auth()->user()->is_admin == 1) {
 
-        return view('admin.customer.customer_dashboard', ['mType' => $mType, 'usercnt' => $user, 'monitor' => $monitor, 'monitor_type' => $monitor_type, 'Monitor_response' => $Monitor_response]);
+            $user = User::all();
+            $monitor_type = monitor_type::all();
+            $monitor = monitors::all();
+            $Monitor_response = Monitor_response::all();
+            $mType = monitor_type::all();
+
+            return view('admin.customer.customer_dashboard', ['mType' => $mType, 'usercnt' => $user, 'monitor' => $monitor, 'monitor_type' => $monitor_type, 'Monitor_response' => $Monitor_response]);
+        } else {
+            return "please user authentication";
+        }
     }
 
     public function status()
