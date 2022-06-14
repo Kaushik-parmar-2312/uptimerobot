@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <base href="http://localhost:8000">
+    <base href={{  url('') }} >
 <head>
     <title>UpTime Robot </title>
 </head>
