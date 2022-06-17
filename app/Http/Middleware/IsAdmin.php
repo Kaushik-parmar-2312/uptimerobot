@@ -20,7 +20,7 @@ class IsAdmin
             return $next($request);
         }
         elseif(auth()->user()->is_admin == 0){
-            return $next($request);
+            return redirect()->route('/');
         }
         else{
             return redirect('/')->with('error',"You don't have admin access.");
