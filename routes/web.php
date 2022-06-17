@@ -18,9 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+
+Route::fallback(function () {
+    return redirect()->route('/');
+  });
+
+
 Route::get('/', function () {
     return view('Visitor.index');
-});
+})->name('/');
 
 Route::get('/integrations', function () {
     return view('Visitor.integrations');
@@ -48,7 +54,7 @@ Route::get('admin/users', [admin_controller::class, 'get_details'])->name('monit
 Route::get('admin/contact_details', [admin_controller::class, 'get_contact_details'])->name('monitor.startpausemonitor');
 Route::get('admin/monitor_type', [admin_controller::class, 'get_monitorType_details'])->name('monitor.startpausemonitor');
 Route::get('admin/monitor', [admin_controller::class, 'get_monitor_details'])->name('monitor.startpausemonitor');
- 
+
 //userside dashbord
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
@@ -93,5 +99,6 @@ Route::get('/statuspage', function () {
     Route::get('/getMonitors&monitorSearchKeyword/{monitorSearchKeyword}', [monitors_controller::class, 'monitorSearch'])->name('monitor.monitorSearch');
     Route::get('/getMonitors', [monitors_controller::class, 'getMonitors'])->name('monitor.getMonitors');
     Route::get('/sortmoniting/{sortmonitor}', [monitors_controller::class, 'sortmonitring'])->name('monitor.sortmonitring');
+
 
 
