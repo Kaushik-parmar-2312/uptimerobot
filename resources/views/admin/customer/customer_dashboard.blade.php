@@ -37,7 +37,7 @@
                     </div>
                     <a href="{{url('users')}}">
                         <div class="panel-footer">
-                            <span class="pull-left">View adminside</span>
+                            <span class="pull-left">View Customer</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                             <div class="clearfix"></div>
@@ -123,31 +123,32 @@
 
                             <table style='text-align:Center;' class="table table-striped table-bordered table-hover"
                                 id="dataTables-example">
+                               
+                                
                                 <thead>
+                                <th>
+                                   New Customer 
+                                </th>
+                            </thead>
                                     <tr>
                                         <th>Number</th>
-                                        <th>Monitor Type</th>
+                                        <th>Name </th>
+                                        <th>Email </th>
                                         
                                     </tr>
-                                </thead>
                                 <tbody>
-                                    @if(count($mType)>0)
-                                    @foreach($mType as $i)
-                                    @if($i['id']%2==0)
+                                    @if(count($userLimit)>0)
+                                    @php $id=1;
+                                    @endphp
+                                    @foreach($userLimit as $i)
                                     <tr class="odd gradeX">
-                                        <td>{{$i->id}}</td>
-                                        <td >{{$i->monitor_type}}</td>
+                                        <td>{{$id}}</td>
+                                        <td >{{$i->name}}</td>
+                                        <td >{{$i->email}}</td>
                                        
-
+                                        
                                     </tr>
-                                    @else
-                                    <tr class="odd gradeX">
-                                    <td>{{$i->id}}</td>
-                                        <td >{{$i->monitor_type}}</td>
-                                    
-                                       
-                                    </tr>
-                                    @endif
+                                    @php $id++;@endphp
                                     @endforeach
                                     @else
                                     <tr>
@@ -300,21 +301,21 @@ new Chart("pie", {
 </script>
 
 <!-- jQuery -->
-<script src="adminside/js/jquery.min.js"></script>
+<script src="Customer/js/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="adminside/js/bootstrap.min.js"></script>
+<script src="Customer/js/bootstrap.min.js"></script>
 
 <!-- Metis Menu Plugin JavaScript -->
-<script src="adminside/js/metisMenu.min.js"></script>
+<script src="Customer/js/metisMenu.min.js"></script>
 
 <!-- Morris Charts JavaScript -->
-<script src="adminside/js/raphael.min.js"></script>
-<script src="adminside/js/morris.min.js"></script>
-<script src="adminside/js/morris-data.js"></script>
+<script src="Customer/js/raphael.min.js"></script>
+<script src="Customer/js/morris.min.js"></script>
+<script src="Customer/js/morris-data.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="adminside/js/startmin.js"></script>
+<script src="Customer/js/startmin.js"></script>
 
 </body>
 

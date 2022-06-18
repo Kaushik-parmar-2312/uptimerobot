@@ -103,5 +103,9 @@ Route::get('/statuspage', function () {
     Route::get('/getMonitors', [monitors_controller::class, 'getMonitors'])->name('monitor.getMonitors');
     Route::get('/sortmoniting/{sortmonitor}', [monitors_controller::class, 'sortmonitring'])->name('monitor.sortmonitring');
 
+    Route::get('/report',[admin_controller::class,'pdf']);
+
+    Route::get('/pdf/{id}', [monitors_controller::class, 'pdf_generator'])->name('monitor.pdf');
+
 
 

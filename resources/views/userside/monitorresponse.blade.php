@@ -771,8 +771,9 @@
                         <caption>
                             <h4>Latest Events <span>(up, down, start, pause)</span></h4>
                             <a class="pull-right"
-                                href="https://uptimerobot.com/inc/dml/monitorDML.php?action=getLatestEventsCSV&monitorID=791148496"
+                                href="/pdf/{{ $data['id'] }}"
                                 title="Export Logs"> Export Logs</a>
+                           
                         </caption>
                         <thead>
                             <tr>

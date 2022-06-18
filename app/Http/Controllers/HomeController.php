@@ -76,14 +76,14 @@ class HomeController extends Controller
     {
 
         if (auth()->user()->is_admin == 1) {
-
-            $user = User::all();
-            $monitor_type = monitor_type::all();
-            $monitor = monitors::all();
-            $Monitor_response = Monitor_response::all();
-            $mType = monitor_type::all();
-
-            return view('admin.customer.customer_dashboard', ['mType' => $mType, 'usercnt' => $user, 'monitor' => $monitor, 'monitor_type' => $monitor_type, 'Monitor_response' => $Monitor_response]);
+            $user= User::all();
+            $monitor_type= monitor_type::all();
+            $monitor= monitors::all();
+            $Monitor_response= Monitor_response::all();
+            $userLimit= User::orderBy('id','DESC')->limit(5)->get();
+        
+            return view('admin.customer.customer_dashboard',['userLimit'=>$userLimit,'usercnt'=>$user,'monitor'=>$monitor,'monitor_type'=>$monitor_type,'Monitor_response'=>$Monitor_response]);
+     
         } else {
             $url = url('');
             return "please Go to Dashbord <a href='$url/dashboard'> Dashbord</a>";
