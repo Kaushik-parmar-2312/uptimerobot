@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -21,6 +22,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
     }
 
     /**
@@ -65,13 +67,14 @@ class HomeController extends Controller
 
             return view('userside.dashboard', compact('data'));
         }else{
-            return "please login to admin controller";
+            $url = url('');
+            return "please Go to Dashbord <a href='$url/admin/dashboard'> Dashbord</a>";
         }
 
     }
     public function adminHome()
     {
-      
+
         if (auth()->user()->is_admin == 1) {
 
             $user = User::all();
@@ -82,7 +85,8 @@ class HomeController extends Controller
 
             return view('admin.customer.customer_dashboard', ['mType' => $mType, 'usercnt' => $user, 'monitor' => $monitor, 'monitor_type' => $monitor_type, 'Monitor_response' => $Monitor_response]);
         } else {
-            return "please user authentication";
+            $url = url('');
+            return "please Go to Dashbord <a href='$url/dashboard'> Dashbord</a>";
         }
     }
 

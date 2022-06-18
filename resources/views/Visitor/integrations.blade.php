@@ -9,7 +9,7 @@
     <meta name="description" content="Start monitoring in 30 seconds. Use advanced SSL, keyword and cron monitoring. Get notified by email, SMS, Slack and more. Get 50 monitors for FREE!">
     <meta name="keywords" content="uptime, uptime monitor, uptime robot">
     <meta name="robots" content="index, follow">
-    <base href="http://localhost:8000">
+    <base href={{  url('') }} >
     <meta name="theme-color" content="#131a26">
     <meta name="theme_color" content="#131a26">
     <meta name="msapplication-navbutton-color" content="#131a26">
@@ -49,15 +49,15 @@
                     </ul>
                 </div>
                 <div class="page-menu uk-flex uk-flex-middle">
-               
+
                     <ul class="nav uk-visible@l">
-                    @guest    
+                    @guest
                             @if (Route::has('login'))
                                 <li style="margin-top:5%" class=" hide-for-logged"><a  href="{{route('login')}}">Log In</a></li>
                             @endif
 
                             @if (Route::has('register'))
-                                <a class="register-btn uk-button uk-button-primary uk-visible@s hide-for-logged" 
+                                <a class="register-btn uk-button uk-button-primary uk-visible@s hide-for-logged"
                                 href="{{ route('register') }}">Register for FREE </a><button aria-label="Open menu" type="button" class="btn-icon uk-hidden@l uk-margin-small-left"
                                     uk-toggle="target: #mobile-menu" type="button"><svg class="icon-menu font-24">
                                         <use xlink:href="{{ asset('userside/assets/images/symbol-defs.svg#icon-menu') }}"></use>
@@ -66,7 +66,7 @@
                     @else
                             <li class="">
                                 <a href="{{route('dashboard')}}">
-                                    Go to Dashboard 
+                                    Go to Dashboard
                                 <svg class="icon-login">
                                         <use xlink:href="{{ asset('userside/assets/images/symbol-defs.svg#icon-login')}}">
                                         </use>
@@ -74,8 +74,8 @@
 
                     @endguest
                     </ul>
-                
-                       
+
+
                 </div>
             </nav>
         </div>

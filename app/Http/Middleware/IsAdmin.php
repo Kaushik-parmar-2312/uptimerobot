@@ -20,13 +20,13 @@ class IsAdmin
             return $next($request);
         }
         elseif(auth()->user()->is_admin == 0){
-            return redirect('/dashboard');
+            return redirect()->route('/');
         }
         else{
             return redirect('/')->with('error',"You don't have admin access.");
         }
-   
-        
-        
+
+
+
     }
 }
