@@ -93,7 +93,7 @@
 
                         </li>
                         <li>
-                            <a href="admin" class="active"><i class="fa fa-dashboard fa-fw"></i>
+                            <a href="/admin/dashboard" class="active"><i class="fa fa-dashboard fa-fw"></i>
                                 Dashboard</a>
                         </li>
                         <li>

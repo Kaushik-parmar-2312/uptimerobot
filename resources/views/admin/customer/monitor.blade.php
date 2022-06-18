@@ -7,8 +7,6 @@
 ?>
 
 @include('admin/customer/customer_slidebar');
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row">
@@ -28,7 +26,7 @@
                     <div class="panel-body">
                         <div class="table-responsive">
 
-                            <table style='text-align:Center;' class="table table-striped table-bordered table-hover"
+                            <table style='text-align:Center;'  id="datatablesSimple" class="table table-striped table-bordered table-hover"
                                 id="dataTables-example">
                                 <thead>
                                     <tr>
@@ -39,7 +37,7 @@
                                         <th>URL IP</th>
                                         <th>Interval</th>
                                         <th>Time out</th>
-                                        <th>Status</th>
+                                        {{-- <th>Status</th> --}}
                                         <!-- <th>Response time</th> -->
                                         
                                     </tr>
@@ -56,7 +54,7 @@
                                         <td >{{$i->url_ip}}</td>
                                         <td >{{$i->interval}}</td>
                                         <td >{{$i->timeout??"-"}}</td>
-                                        <td >{{$i->status ??"-"}}</td>
+                                        {{-- <td >{{$i->status ??"-"}}</td> --}}
                                         <!-- <td >{{$i->response_time ??"-"}}</td> -->
                                        
 
@@ -70,8 +68,8 @@
                                         <td >{{$i->url_ip}}</td>
                                         <td >{{$i->interval}}</td>
                                         <td >{{$i->timeout??"-"}}</td>
-                                        <td >{{$i->status??"-"}}</td>
-                                        <!-- <td >{{$i->response_time??"-"}}</td> -->
+                                        {{-- <td >{{$i->status??"-"}}</td> --}}
+                                      
                                     
                                        
                                     </tr>
@@ -108,7 +106,7 @@
 
 </div>
 <!-- /#wrapper -->
-
+{{-- 
 <!-- jQuery -->
 <script src="Customer/js/jquery.min.js"></script>
 
@@ -118,22 +116,26 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="Customer/js/metisMenu.min.js"></script>
 
-<!-- DataTables JavaScript -->
+{{-- <!-- DataTables JavaScript -->
 <script src="Customer/js/dataTables/jquery.dataTables.min.js"></script>
-<script src="Customer/js/dataTables/dataTables.bootstrap.min.js"></script>
+<script src="Customer/js/dataTables/dataTables.bootstrap.min.js"></script> --}}
 
 <!-- Custom Theme JavaScript -->
-<script src="Customer/js/startmin.js"></script>
+{{-- <script src="Customer/js/startmin.js"></script> --}} 
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-<script>
+{{-- <script>
 $(document).ready(function() {
     $('#dataTables-example').DataTable({
         responsive: true
     });
 });
-</script>
+</script> --}}
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="{{ asset('adminside/js/datatables-simple-demo.js')}}"></script>
 <!-- Product Add model -->
 
 

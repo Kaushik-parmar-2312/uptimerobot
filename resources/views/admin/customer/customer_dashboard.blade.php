@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{url('users')}}">
+                    <a href="{{url('admin/users')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View Customer</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="monitor">
+                    <a href="admin/monitor">
                         <div class="panel-footer">
                             <span class="pull-left">View monitor</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{url('monitor_type')}}">
+                    <a href="{{url('admin/monitor_type')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View monitor type</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -96,15 +96,15 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-flag-o fa-5x"></i>
+                                <i class="fa fa-arrow-down fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{count($Monitor_response)}}</div>
-                                <div>Total Monitor response </div>
+                                <div>Total Monitor Down </div>
                             </div>
                         </div>
                     </div>
-                    <a href="{{url('admin')}}">
+                    <a href="{{url('admin/admin')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View Respomses</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

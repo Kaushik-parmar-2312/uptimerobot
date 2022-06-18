@@ -81,8 +81,9 @@ class HomeController extends Controller
             $monitor= monitors::all();
             $Monitor_response= Monitor_response::all();
             $userLimit= User::orderBy('id','DESC')->limit(5)->get();
-        
-            return view('admin.customer.customer_dashboard',['userLimit'=>$userLimit,'usercnt'=>$user,'monitor'=>$monitor,'monitor_type'=>$monitor_type,'Monitor_response'=>$Monitor_response]);
+            $responseDown=monitors::where('status',0)->get();
+            
+            return view('admin.customer.customer_dashboard',['userLimit'=>$userLimit,'usercnt'=>$user,'monitor'=>$monitor,'monitor_type'=>$monitor_type,'Monitor_response'=>$responseDown]);
      
         } else {
             $url = url('');
