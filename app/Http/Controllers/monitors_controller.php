@@ -528,10 +528,9 @@ class monitors_controller extends Controller
                     $time1 = $currentdate;
                     $time2 = new DateTime($latest_up);
                     $interval = $time1->diff($time2);
-                   
+
                     $day = $interval->d;
                     $t = gmdate($day) * 24 + gmdate($interval->h);
-                   
 
                     $duration = $t . " hrs," . $interval->i . " mins";
                     //dd($duration);
@@ -608,10 +607,10 @@ class monitors_controller extends Controller
                 $time1 = new DateTime($latest_up);
                 $time2 = new DateTime($latest_down);
                 $interval = $time1->diff($time2);
-                $day =$interval->d;
-                    $t=gmdate($day)*24 + gmdate($interval->h) ;
-                    
-                    $duration = $t . " hrs," . $interval->i . " mins";
+                $day = $interval->d;
+                $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                $duration = $t . " hrs," . $interval->i . " mins";
 
                 // $duration = $interval->h . " hrs," . $interval->i . " mins";
                 $data['latestDownTime'][0]['totaltime'] = $duration;
@@ -623,8 +622,8 @@ class monitors_controller extends Controller
                 $time1 = $currentdate;
                 $time2 = new DateTime($latest_up);
                 $interval = $time1->diff($time2);
-                $t=gmdate($day)*24 + gmdate($interval->h) ;
-                    
+                $t = gmdate($day) * 24 + gmdate($interval->h);
+
                 $duration = $t . " hrs," . $interval->i . " mins";
                 $data['latestDownTime'][0]['totaltime'] = $duration;
                 $data['latestDownTime'][0]['created_at'] = $latest_up;
@@ -655,8 +654,10 @@ class monitors_controller extends Controller
                     $time1 = new DateTime($latest_up);
                     $time2 = new DateTime($latest_down);
                     $interval = $time1->diff($time2);
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
 
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                     // echo $interval->format('%s second(s)');
                 } else {
@@ -667,7 +668,10 @@ class monitors_controller extends Controller
                     $time1 = $currentdate;
                     $time2 = new DateTime($latest_up);
                     $interval = $time1->diff($time2);
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                 }
 
@@ -689,8 +693,10 @@ class monitors_controller extends Controller
                     $time1 = new DateTime();
                     $time2 = new DateTime($latest_down);
                     $interval = $time1->diff($time2);
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
 
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                     // echo $interval->format('%s second(s)');
                 } else {
@@ -701,7 +707,10 @@ class monitors_controller extends Controller
                     $time1 = $currentdate;
                     $time2 = new DateTime($latest_up);
                     $interval = $time1->diff($time2);
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                 }
 
@@ -725,7 +734,10 @@ class monitors_controller extends Controller
                 $time1 = $currentdate;
                 $time2 = new DateTime($latest_up);
                 $interval = $time1->diff($time2);
-                $duration = $interval->h . " hrs," . $interval->i . " mins";
+                $day = $interval->d;
+                $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                $duration = $t . " hrs," . $interval->i . " mins";
                 $data['record'][$key]['totaltime'] = $duration;
             }
         }
@@ -1045,8 +1057,10 @@ class monitors_controller extends Controller
                 $time1 = new DateTime($latest_up);
                 $time2 = new DateTime($latest_down);
                 $interval = $time1->diff($time2);
+                $day = $interval->d;
+                $t = gmdate($day) * 24 + gmdate($interval->h);
 
-                $duration = $interval->h . " hrs," . $interval->i . " mins";
+                $duration = $t . " hrs," . $interval->i . " mins";
                 $data['latestDownTime'][0]['totaltime'] = $duration;
                 $data['latestDownTime'][0]['created_at'] = $latest_down;
 
@@ -1061,8 +1075,10 @@ class monitors_controller extends Controller
                 $time2 = new DateTime($latest_up);
 
                 $interval = $time1->diff($time2);
+                $day = $interval->d;
+                $t = gmdate($day) * 24 + gmdate($interval->h);
 
-                $duration = $interval->h . " hrs," . $interval->i . " mins";
+                $duration = $t . " hrs," . $interval->i . " mins";
                 $data['latestDownTime'][0]['totaltime'] = $duration;
                 $data['latestDownTime'][0]['created_at'] = $latest_up;
                 // dd($data['latestDownTime'][0]);
@@ -1101,7 +1117,10 @@ class monitors_controller extends Controller
                     $time2 = new DateTime($latest_down);
                     $interval = $time1->diff($time2);
 
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                     // echo $interval->format('%s second(s)');
                 } else {
@@ -1111,8 +1130,10 @@ class monitors_controller extends Controller
                     $currentdate = new DateTime(date('Y-m-d H:i:s'));
                     $time1 = $currentdate;
                     $time2 = new DateTime($latest_up);
-                    $interval = $time1->diff($time2);
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                 }
 
@@ -1134,8 +1155,10 @@ class monitors_controller extends Controller
                     $time1 = new DateTime($latest_up);
                     $time2 = new DateTime($latest_down);
                     $interval = $time1->diff($time2);
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
 
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                     // echo $interval->format('%s second(s)');
                 } else {
@@ -1146,7 +1169,10 @@ class monitors_controller extends Controller
                     $time1 = $currentdate;
                     $time2 = new DateTime($latest_up);
                     $interval = $time1->diff($time2);
-                    $duration = $interval->h . " hrs," . $interval->i . " mins";
+                    $day = $interval->d;
+                    $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                    $duration = $t . " hrs," . $interval->i . " mins";
                     $data['record'][$key]['totaltime'] = $duration;
                 };
 
@@ -1170,7 +1196,10 @@ class monitors_controller extends Controller
                 $time1 = $currentdate;
                 $time2 = new DateTime($latest_up);
                 $interval = $time1->diff($time2);
-                $duration = $interval->h . " hrs," . $interval->i . " mins";
+                $day = $interval->d;
+                $t = gmdate($day) * 24 + gmdate($interval->h);
+
+                $duration = $t . " hrs," . $interval->i . " mins";
                 $data['record'][$key]['totaltime'] = $duration;
             }
         }
@@ -1180,12 +1209,13 @@ class monitors_controller extends Controller
 
     }
 
-    function pdf_generator($id){
-        $pdf=\App::make('dompdf.wrapper');
-	    $pdf->loadHTML($this->pdf_cust_product($id));
-	    return $pdf->stream();
+    public function pdf_generator($id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($this->pdf_cust_product($id));
+        return $pdf->stream();
     }
-    function pdf_cust_product($id)
+    public function pdf_cust_product($id)
     {
         $c_date = date('Y-m-d H:i:s');
         $cur = date('Y-m-d H:i:s', strtotime('-1 day', strtotime($c_date)));
@@ -1195,7 +1225,7 @@ class monitors_controller extends Controller
 
         //  dd($data['record']);
         foreach ($data['record'] as $key => $value) {
-        
+
             if ($value['status'] == "Down") {
 
                 $m_id = $value['monitor_id'];
@@ -1287,88 +1317,105 @@ class monitors_controller extends Controller
                 $data['record'][$key]['totaltime'] = $duration;
             }
         }
-        
-        
-        
+
         //dd($pro_data);
-       $output =  "
+        $output = "
+
+
+       <title>Dashboard | UptimeRobot</title>
+
+       <link href='{{ asset('userside\assets\css\style.css') }}' rel='stylesheet'>
+
+
        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css' integrity='sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO' crossorigin='anonymous'>
        <script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
        <script src='https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js' integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49' crossorigin='anonymous'></script>
-       <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js' integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy' crossorigin='anonymous'></script>";
+       <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js' integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy' crossorigin='anonymous'></script>"
+
+        ;
+
+        $output .= "
         
+        <div class='container text-left'>
+          <h1  style='color:green'align='left'>Uptime Robot</h1>  
+         <p class='text-right'>
+            Elsner@support.com
 
+         </p> 
+        </div>
+        <hr>
 
+        <h3 style='color:orange; font-size:250%;' align='center'>Logs Report</h3>
+        <br>
+        <div>
+          <h5 class='text-right'>Date :".now()->format('d/m/y')."</h5>
+            <h4 style='color:red'>Monitor Name : " . $data['record'][0]['monitor']['friendly_name'] . "</h4>
+            
+        </div> 
+      		
 
-       $output.=" 
-       <div class='container ' style=';color:green'>
-       <h1 class='text-center'>
-        Uptimes Robots
-        </h1>
-       </div>
-       <hr>
-       <div>
-       <h4>Monitor Name : ".$data['record'][0]['monitor']['friendly_name'] ."</h4>
-       </div>
-       </div>
-       ";
+        ";
 
-       $output .="<table style='text-align:Center;width:100%' border='1' class='table table-striped table-bordered table-hover'
-        id='dataTables-example'>
+        $output .= "<table style='text-align:Center;width:100%' border='1' class='table table-striped table-bordered table-hover'
+       >
         <thead>
             <tr>
                 <th>Event</th>
                 <th>Date-Time</th>
                 <th>Reason</th>
                 <th>Duration</th>
-               
-                
             </tr>
         </thead>
         <tbody>";
-        foreach($data['record'] as $i)
-        {
-           $date= date_create($i['created_at']);
-           $reason= "";
-            if ($i['status'] == 'Start')
-                $reason ="Started";
-            if ($i['status'] == 'Pause')
+        foreach ($data['record'] as $i) {
+            $date = date_create($i['created_at']);
+            $reason = "";
+            if ($i['status'] == 'Start') {
+                $reason = "Started";
+            }
+
+            if ($i['status'] == 'Pause') {
                 $reason = "Paused";
-            if ($i['status'] == 'Up')
+            }
+
+            if ($i['status'] == 'Up') {
                 $reason = "<p style='color:green'>OK (200)</p>";
-            if ($i['status'] == 'Down')
+            }
+
+            if ($i['status'] == 'Down') {
                 $reason = "<p style='color:red'>Connection Timeout</p>";
-            $output .="
-            <tr class='odd gradeX'>  
+            }
+
+            $output .= "
+            <tr class='odd gradeX'>
                 <td>{$i['status']}</td>
-                <td>".date_format( $date  ,'Y/m/d H:i:s')."</td>
+                <td>" . date_format($date, 'Y/m/d H:i:s') . "</td>
                 <td>{$reason}</td>
                 <td >{$i['totaltime']}</td>
             </tr>
              ";
 
-      
         }
-        
-        $output.="</tbody></table>
-        
-        
-        
-        <footer>
-        <div class='footer' style='position: absolute; bottom: 0;'>
-            <table width='100%''>
-                <tr>
-                    <td align='left' style='width: 50%;'>
-                        &copy; - All rights reserved.
-                    </td>
-                    <td align='right' style='width: 50%;'>
-                        UptimeRobots
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </footer>";
-    
+
+        $output .= "</tbody></table>
+
+
+
+            <footer>
+                <div class='footer' style='position: absolute; bottom: 0;'>
+                    <table width='100%''>
+                        <tr>
+                            <td align='left' style='width: 50%;'>
+                                &copy; - All rights reserved.
+                            </td>
+                            <td align='right' style='width: 50%;'>
+                                UptimeRobots
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </footer>";
+
         return $output;
     }
 
