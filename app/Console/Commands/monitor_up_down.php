@@ -46,7 +46,7 @@ class monitor_up_down extends Command
     {
 
         $monitorslist = monitors::where('pause', '0')->with('monitorcontact.contact')->get()->toArray();
-        // dd($monitorslist);
+        
         if (empty($monitorslist)) {
                 dd("try again");
         } else {
@@ -56,14 +56,15 @@ class monitor_up_down extends Command
 
                 if ($mt["monitor_type_id"] == 1) {
                     $monitorslist_type = monitors::where('pause', '0')->where('monitor_type_id', '1')->with('monitorcontact.contact')->get()->toArray();
-
+                    // dd($monitorslist_type);
                     foreach ($monitorslist_type as $m) {
 
                         $result = UserLogModel::where('monitor_id', $m['id'])->orderBy('created_at', 'desc')->limit(1)->get()->toArray();
 
                         if (!empty($result)) {
-
-                            if ($result[0]['status'] == 'start') {
+                            // dd($result[0]['status']);
+                            if ($result[0]['status'] == 'Start') {
+                                
                                 $curTime = microtime(true);
                                 $curl = curl_init();
                                 curl_setopt_array($curl, array(
@@ -102,13 +103,14 @@ class monitor_up_down extends Command
                                 $urls = preg_replace("/^(?:https?:\/\/)?(?:www\.)?/i", "", $m['url_ip']);
                                 $dt = 'wsl ping -c 10';
                                 $data = $dt . ' ' . $urls;
+                                //  print_r($data);
                                 //echo $data.PHP_EOL;
                                 $output = shell_exec($data);
                                 $value = substr($output, strrpos($output, '=') + 1);
-                                // dd($value);
+                                // print_r($value);
                                 $data = str_replace(array("\r", "\n"), '', $value);
                                 $values = explode('/', $value);
-
+                            // dd($values);
                                 if (!empty($values[1])) {
 
                                     $logs = new UserLogModel();
@@ -133,7 +135,7 @@ class monitor_up_down extends Command
                                                 $logs->min = $values[0];
                                                 $logs->avg = $values[1];
                                                 $logs->max = $values[2];
-                                                $logs->mdev = $values[3];
+                                                //$logs->mdev = $values[3];
                                                 $logs->interval = $m['interval'];
                                                 $logs->StatusCode = $status['http_code'];
                                                 $logs->save();
@@ -160,7 +162,7 @@ class monitor_up_down extends Command
                                                 $details['subject'] = 'Monitor is UP:' . $m['friendly_name'];
                                                 $details['monitor_url'] = $m['url_ip'];
                                                 $details['timestamp'] = Carbon::now();
-                                              Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                             // Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                             }
 
                                         }
@@ -173,15 +175,18 @@ class monitor_up_down extends Command
 
                             } else {
                                 if ($result[0]['status'] == 'Up') {
-                                    $interval_time = new DateTime($result[0]['interval']);
-                                    $interval = Carbon::parse($interval_time)->format('i');
+                                    $interval = Carbon::parse($result[0]['interval'])->format('i');
+                                    $timeout = Carbon::parse($m['timeout'])->format('s');
                                     $latest_date_time = new DateTime($result[0]['created_at']);
                                     $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
                                     $currentdate = new DateTime(date('Y-m-d H:i:s'));
                                     $time1 = $currentdate;
                                     $time2 = new DateTime($latest_up);
                                     $diff = $time1->diff($time2);
-                                    if ($diff->i == $interval) {
+                                    $d1 = strval($diff->i);
+    
+                                    // dd($d1);
+                                    if (intval($d1) >= intval($interval)) {
                                         $curTime = microtime(true);
                                         $curl = curl_init();
                                         curl_setopt_array($curl, array(
@@ -245,7 +250,7 @@ class monitor_up_down extends Command
                                                         $logs->min = $values[0];
                                                         $logs->avg = $values[1];
                                                         $logs->max = $values[2];
-                                                        $logs->mdev = $values[3];
+                                                        //$logs->mdev = $values[3];
                                                         $logs->interval = $m['interval'];
                                                         $logs->StatusCode = $status['http_code'];
                                                         $logs->save();
@@ -349,7 +354,7 @@ class monitor_up_down extends Command
                                                     $logs->min = $values[0];
                                                     $logs->avg = $values[1];
                                                     $logs->max = $values[2];
-                                                    $logs->mdev = $values[3];
+                                                    //$logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->StatusCode = $status['http_code'];
 
@@ -469,7 +474,7 @@ class monitor_up_down extends Command
                                             $logs->min = $values[0];
                                             $logs->avg = $values[1];
                                             $logs->max = $values[2];
-                                            $logs->mdev = $values[3];
+                                            //$logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->StatusCode = $status['http_code'];
                                             //  dd($logs);
@@ -497,7 +502,7 @@ class monitor_up_down extends Command
                                             $details['monitor_url'] = $m['url_ip'];
                                             $details['timestamp'] = Carbon::now();
                                             //$details['user_id']=$m['user_id'];
-                                          Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                       //   Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                         }
 
                                     }
@@ -509,6 +514,7 @@ class monitor_up_down extends Command
                             }
                         }
                     }
+                    // exit;
                 }
 
                 if ($mt["monitor_type_id"] == 2) {
@@ -519,7 +525,7 @@ class monitor_up_down extends Command
                         $result = UserLogModel::where('monitor_id', $m['id'])->orderBy('created_at', 'desc')->limit(1)->get()->toArray();
 
                         if (!empty($result)) {
-                            if ($result[0]['status'] == 'start') {
+                            if ($result[0]['status'] == 'Start') {
                                 $curTime = microtime(true);
                                 $curl = curl_init();
                                 curl_setopt_array($curl, array(
@@ -590,7 +596,7 @@ class monitor_up_down extends Command
                                                 $logs->min = $values[0];
                                                 $logs->avg = $values[1];
                                                 $logs->max = $values[2];
-                                                $logs->mdev = $values[3];
+                                                //$logs->mdev = $values[3];
                                                 $logs->interval = $m['interval'];
                                                 $logs->StatusCode = $status['http_code'];
                                                 $logs->save();
@@ -616,7 +622,7 @@ class monitor_up_down extends Command
                                                 $details['subject'] = 'Monitor is UP:' . $m['friendly_name'];
                                                 $details['monitor_url'] = $m['url_ip'];
                                                 $details['timestamp'] = Carbon::now();
-                                              Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                            //  Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                             }
 
                                         }
@@ -629,15 +635,17 @@ class monitor_up_down extends Command
 
                             } else {
                                 if ($result[0]['status'] == 'Up') {
-                                    $interval_time = new DateTime($result[0]['interval']);
-                                    $interval = Carbon::parse($interval_time)->format('i');
-                                    $latest_date_time = new DateTime($result[0]['created_at']);
-                                    $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
-                                    $currentdate = new DateTime(date('Y-m-d H:i:s'));
-                                    $time1 = $currentdate;
-                                    $time2 = new DateTime($latest_up);
-                                    $diff = $time1->diff($time2);
-                                    if ($diff->i == $interval) {
+                                    $interval = Carbon::parse($result[0]['interval'])->format('i');
+                                $timeout = Carbon::parse($m['timeout'])->format('s');
+                                $latest_date_time = new DateTime($result[0]['created_at']);
+                                $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
+                                $currentdate = new DateTime(date('Y-m-d H:i:s'));
+                                $time1 = $currentdate;
+                                $time2 = new DateTime($latest_up);
+                                $diff = $time1->diff($time2);
+                                $d1 = strval($diff->i);
+
+                                    if (intval($d1) >= intval($interval)) {
                                         $curTime = microtime(true);
                                         $curl = curl_init();
                                         curl_setopt_array($curl, array(
@@ -700,7 +708,7 @@ class monitor_up_down extends Command
                                                         $logs->min = $values[0];
                                                         $logs->avg = $values[1];
                                                         $logs->max = $values[2];
-                                                        $logs->mdev = $values[3];
+                                                        //$logs->mdev = $values[3];
                                                         $logs->interval = $m['interval'];
                                                         $logs->StatusCode = $status['http_code'];
                                                         $logs->save();
@@ -802,7 +810,7 @@ class monitor_up_down extends Command
                                                     $logs->min = $values[0];
                                                     $logs->avg = $values[1];
                                                     $logs->max = $values[2];
-                                                    $logs->mdev = $values[3];
+                                                    //$logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->StatusCode = $status['http_code'];
 
@@ -917,7 +925,7 @@ class monitor_up_down extends Command
                                             $logs->min = $values[0];
                                             $logs->avg = $values[1];
                                             $logs->max = $values[2];
-                                            $logs->mdev = $values[3];
+                                            //$logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->StatusCode = $status['http_code'];
                                             // dd($logs);
@@ -944,7 +952,7 @@ class monitor_up_down extends Command
                                             $details['monitor_url'] = $m['url_ip'];
                                             $details['timestamp'] = Carbon::now();
                                             //$details['user_id']=$m['user_id'];
-                                          Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                         // Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                         }
 
                                     }
@@ -968,7 +976,7 @@ class monitor_up_down extends Command
                         //dd( $result);
                         if (!empty($result)) {
                           
-                            if ($result[0]['status'] == 'start') {
+                            if ($result[0]['status'] == 'Start') {
                                 $curTime = microtime(true);
                                 $curl = curl_init();
                                 curl_setopt_array($curl, array(
@@ -1038,7 +1046,7 @@ class monitor_up_down extends Command
                                                 $logs->min = $values[0];
                                                 $logs->avg = $values[1];
                                                 $logs->max = $values[2];
-                                                $logs->mdev = $values[3];
+                                                //$logs->mdev = $values[3];
                                                 $logs->interval = $m['interval'];
                                                 $logs->StatusCode = $status['http_code'];
                                                 $logs->save();
@@ -1064,7 +1072,7 @@ class monitor_up_down extends Command
                                                 $details['subject'] = 'Monitor is UP:' . $m['friendly_name'];
                                                 $details['monitor_url'] = $m['url_ip'];
                                                 $details['timestamp'] = Carbon::now();
-                                              Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                             // Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                             }
 
                                         }
@@ -1078,16 +1086,18 @@ class monitor_up_down extends Command
                             } else {
                                 if ($result[0]['status'] == 'Up') {
                                   
-                                    $interval_time = new DateTime($result[0]['interval']);
-                                    $interval = Carbon::parse($interval_time)->format('i');
-                                    $latest_date_time = new DateTime($result[0]['created_at']);
-                                    $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
-                                    $currentdate = new DateTime(date('Y-m-d H:i:s'));
-                                    $time1 = $currentdate;
-                                    $time2 = new DateTime($latest_up);
-                                    $diff = $time1->diff($time2);
+                                    $interval = Carbon::parse($result[0]['interval'])->format('i');
+                                $timeout = Carbon::parse($m['timeout'])->format('s');
+                                $latest_date_time = new DateTime($result[0]['created_at']);
+                                $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
+                                $currentdate = new DateTime(date('Y-m-d H:i:s'));
+                                $time1 = $currentdate;
+                                $time2 = new DateTime($latest_up);
+                                $diff = $time1->diff($time2);
+                                $d1 = strval($diff->i);
+
                                     
-                                    if ($diff->i == $interval) {
+                                    if (intval($d1) >= intval($interval)) {
                                         $curTime = microtime(true);
                                         $curl = curl_init();
                                         curl_setopt_array($curl, array(
@@ -1150,7 +1160,7 @@ class monitor_up_down extends Command
                                                         $logs->min = $values[0];
                                                         $logs->avg = $values[1];
                                                         $logs->max = $values[2];
-                                                        $logs->mdev = $values[3];
+                                                        //$logs->mdev = $values[3];
                                                         $logs->interval = $m['interval'];
                                                         $logs->StatusCode = $status['http_code'];
                                                         $logs->save();
@@ -1253,7 +1263,7 @@ class monitor_up_down extends Command
                                                     $logs->min = $values[0];
                                                     $logs->avg = $values[1];
                                                     $logs->max = $values[2];
-                                                    $logs->mdev = $values[3];
+                                                    //$logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->StatusCode = $status['http_code'];
 
@@ -1368,7 +1378,7 @@ class monitor_up_down extends Command
                                             $logs->min = $values[0];
                                             $logs->avg = $values[1];
                                             $logs->max = $values[2];
-                                            $logs->mdev = $values[3];
+                                            //$logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->StatusCode = $status['http_code'];
                                             // dd($logs);
@@ -1395,7 +1405,7 @@ class monitor_up_down extends Command
                                             $details['monitor_url'] = $m['url_ip'];
                                             $details['timestamp'] = Carbon::now();
                                             //$details['user_id']=$m['user_id'];
-                                          Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                        //  Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                         }
 
                                     }
@@ -1434,7 +1444,7 @@ class monitor_up_down extends Command
                         $result = UserLogModel::where('monitor_id', $m['id'])->orderBy('created_at', 'desc')->limit(1)->get()->toArray();
 
                         if (!empty($result)) {
-                            if ($result[0]['status'] == 'start') {
+                            if ($result[0]['status'] == 'Start') {
                                 $curTime = microtime(true);
                                 $curl = curl_init();
                                 curl_setopt_array($curl, array(
@@ -1505,7 +1515,7 @@ class monitor_up_down extends Command
                                                 $logs->min = $values[0];
                                                 $logs->avg = $values[1];
                                                 $logs->max = $values[2];
-                                                $logs->mdev = $values[3];
+                                                //$logs->mdev = $values[3];
                                                 $logs->interval = $m['interval'];
                                                 $logs->StatusCode = $status['http_code'];
                                                 $logs->save();
@@ -1531,7 +1541,7 @@ class monitor_up_down extends Command
                                                 $details['subject'] = 'Monitor is UP:' . $m['friendly_name'];
                                                 $details['monitor_url'] = $m['url_ip'];
                                                 $details['timestamp'] = Carbon::now();
-                                              Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                            //  Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                             }
 
                                         }
@@ -1544,15 +1554,17 @@ class monitor_up_down extends Command
 
                             } else {
                                 if ($result[0]['status'] == 'Up') {
-                                    $interval_time = new DateTime($result[0]['interval']);
-                                    $interval = Carbon::parse($interval_time)->format('i');
-                                    $latest_date_time = new DateTime($result[0]['created_at']);
-                                    $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
-                                    $currentdate = new DateTime(date('Y-m-d H:i:s'));
-                                    $time1 = $currentdate;
-                                    $time2 = new DateTime($latest_up);
-                                    $diff = $time1->diff($time2);
-                                    if ($diff->i == $interval) {
+                                    $interval = Carbon::parse($result[0]['interval'])->format('i');
+                                $timeout = Carbon::parse($m['timeout'])->format('s');
+                                $latest_date_time = new DateTime($result[0]['created_at']);
+                                $latest_up = Carbon::parse($latest_date_time)->format('Y-m-d H:i:s');
+                                $currentdate = new DateTime(date('Y-m-d H:i:s'));
+                                $time1 = $currentdate;
+                                $time2 = new DateTime($latest_up);
+                                $diff = $time1->diff($time2);
+                                $d1 = strval($diff->i);
+
+                                    if (intval($d1) >= intval($interval)) {
                                         $curTime = microtime(true);
                                         $curl = curl_init();
                                         curl_setopt_array($curl, array(
@@ -1616,7 +1628,7 @@ class monitor_up_down extends Command
                                                         $logs->min = $values[0];
                                                         $logs->avg = $values[1];
                                                         $logs->max = $values[2];
-                                                        $logs->mdev = $values[3];
+                                                        //$logs->mdev = $values[3];
                                                         $logs->interval = $m['interval'];
                                                         $logs->StatusCode = $status['http_code'];
                                                         $logs->save();
@@ -1719,7 +1731,7 @@ class monitor_up_down extends Command
                                                     $logs->min = $values[0];
                                                     $logs->avg = $values[1];
                                                     $logs->max = $values[2];
-                                                    $logs->mdev = $values[3];
+                                                    //$logs->mdev = $values[3];
                                                     $logs->interval = $m['interval'];
                                                     $logs->StatusCode = $status['http_code'];
 
@@ -1836,7 +1848,7 @@ class monitor_up_down extends Command
                                             $logs->min = $values[0];
                                             $logs->avg = $values[1];
                                             $logs->max = $values[2];
-                                            $logs->mdev = $values[3];
+                                            //$logs->mdev = $values[3];
                                             $logs->interval = $m['interval'];
                                             $logs->StatusCode = $status['http_code'];
                                             // dd($logs);
@@ -1863,7 +1875,7 @@ class monitor_up_down extends Command
                                             $details['monitor_url'] = $m['url_ip'];
                                             $details['timestamp'] = Carbon::now();
                                             //$details['user_id']=$m['user_id'];
-                                            Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
+                                            // Mail::to($c['contact']['email'])->send(new \App\Mail\MonitorNotificationSend($details));
                                         }
 
                                     }

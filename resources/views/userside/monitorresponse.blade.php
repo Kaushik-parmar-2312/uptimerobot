@@ -1,4 +1,4 @@
-{{-- <script type="text/javascript">
+ {{-- <script type="text/javascript">
 	$(document).ready(function() {
 
 		var timezoneDiff = +330;
@@ -323,6 +323,9 @@
                     <div id="dashboardUptimeLine">
                         <div class="uptimeHiddenRatio" style="display:none;">50.000</div>
                         <ul class="uptimeChart">
+                            
+                            @if($data['status'] == '' || $data['status'] == 'NULL')
+                            @else
                             @if ($data['status'] == 0)
                                 <li data-tooltip="Start Time:   {{ \Carbon\Carbon::parse($data['created_at'])->format('Y-m-d h:m:s') }}<br>End Time: 2022-04-25 15:44:06<br>Duration: 182 hrs, 11 mins<br>Status: Up"
                                     style="width: 100%; background:#ba3737;"><img
@@ -331,6 +334,7 @@
                                 <li data-tooltip="Start Time:   {{ \Carbon\Carbon::parse($data['created_at'])->format('Y-m-d h:m:s') }}<br>End Time: 2022-04-25 15:44:06<br>Duration: 182 hrs, 11 mins<br>Status: Up"
                                     style="width: 100%; background:#4da74d;"><img
                                         src="{{ asset('userside/assets/img/1px.webp') }}" alt="1px"></li>
+                            @endif
                             @endif
                         </ul>
                     </div>
@@ -416,48 +420,70 @@
                 <div id="monitorDashboardSideInfo" class="span4 grider">
                     <div class="row-fluid">
                         <div class="span12 grider-item">
-                            @if ($data['status'] == 0)
-                                <div id="monitorCurrentStatus" class="row-fluid">
-                                    <div class="span12 grider-item">
-                                        <div class="statistic-box well well-black well-impressed">
-                                            <div class="section-title">
-                                                <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
-                                                    Current Status</h5>
-                                            </div>
-                                            <div id="monitorCurrentStatusContent" class="section-content">
-                                                <h2 class="statistic-values">
-                                                    <span class="item-icon fontello-icon-cd" style="color:#ba3737;;">
-                                                        Down
-                                                    </span>
-                                                </h2><span class="info-block">Since
-                                                    {{ $data['latestDownTime'][0]['totaltime'] }} (
-                                                    {{ $data['latestDownTime'][0]['created_at'] }})</span>
-                                            </div>
+                            @if($data['status'] == '' || $data['status'] == 'NULL')
+                            <div id="monitorCurrentStatus" class="row-fluid">
+                                <div class="span12 grider-item">
+                                    <div class="statistic-box well well-black well-impressed">
+                                        <div class="section-title">
+                                            <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
+                                                Current Status</h5>
                                         </div>
-                                    </div>
-                                </div>
+                            <div id="monitorCurrentStatusContent" class="section-content">
+                                <h2 class="statistic-values">
+                                <span class="item-icon fontello-icon-cd" style="color:#9c9b9b;">
+                                No data
+                                </span>
+                                </h2><span class="info-block">Since 0 hrs, 0 mins ({{ \Carbon\Carbon::parse($data['created_at'])->format('Y/m/d h:m:s') }})</span> </div>
+                            </div>
+                        </div>
+                    </div>
                             @else
-                                <div id="monitorCurrentStatus" class="row-fluid">
-                                    <div class="span12 grider-item">
-                                        <div class="statistic-box well well-black well-impressed">
-                                            <div class="section-title">
-                                                <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
-                                                    Current Status</h5>
-                                            </div>
-                                            <div id="monitorCurrentStatusContent" class="section-content">
-                                                <h2 class="statistic-values">
-                                                    <span class="item-icon fontello-icon-cd" style="color:#4da74d;">
-                                                        Up
+                                @if ($data['status'] == 0)
+                                    <div id="monitorCurrentStatus" class="row-fluid">
+                                        <div class="span12 grider-item">
+                                            <div class="statistic-box well well-black well-impressed">
+                                                <div class="section-title">
+                                                    <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
+                                                        Current Status</h5>
+                                                </div>
+                                                <div id="monitorCurrentStatusContent" class="section-content">
+                                                    <h2 class="statistic-values">
+                                                        <span class="item-icon fontello-icon-cd" style="color:#ba3737;;">
+                                                            Down
+                                                        </span>
+                                                    </h2><span class="info-block">Since
+                                                       
+                                                        {{ $data['latestDownTime'][0]['totaltime'] }} (
+                                                        {{ $data['latestDownTime'][0]['created_at'] }})
+                                                       
                                                     </span>
-                                                </h2><span class="info-block">Since
-                                                    {{ $data['current_status'][0]['totaltime'] }}
-                                                    ({{ 
-                                                \Carbon\Carbon::parse($data['current_status'][0]['created_at'])->format('Y-m-d h:m:s')
-                                                }})</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div id="monitorCurrentStatus" class="row-fluid">
+                                        <div class="span12 grider-item">
+                                            <div class="statistic-box well well-black well-impressed">
+                                                <div class="section-title">
+                                                    <h5 class="positive"><i class="item-icon fontello-icon-cd"></i>
+                                                        Current Status</h5>
+                                                </div>
+                                                <div id="monitorCurrentStatusContent" class="section-content">
+                                                    <h2 class="statistic-values">
+                                                        <span class="item-icon fontello-icon-cd" style="color:#4da74d;">
+                                                            Up
+                                                        </span>
+                                                    </h2><span class="info-block">Since
+                                                        {{ $data['current_status'][0]['totaltime'] }}
+                                                        ({{ 
+                                                    \Carbon\Carbon::parse($data['current_status'][0]['created_at'])->format('Y-m-d h:m:s')
+                                                    }})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             @endif
 
                             <div id="monitorRatios" class="row-fluid">
@@ -530,11 +556,12 @@
     <div class="row-fluid">
         <div class="span12">
             <ul class="nav nav-tabs" id="monitor-events-tabs">
-                <li role="presentation" class="active"><a href="#incidents">Incidents</a></li>
-                <li role="presentation"><a href="#monitor-events">All events</a></li>
+                <li role="presentation" class="active"><a href="#monitor-events">All events</a></li>
+                <li role="presentation" ><a href="#incidents">Incidents</a></li>
+               
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="incidents">
+                <div role="tabpanel" class="tab-pane " id="incidents">
                     <table class="table incidents-table">
                         <caption>
                             <h4>Incidents</h4>
@@ -766,7 +793,7 @@
                         <tbody class='incident-pagination'></tbody>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane latestEventsWrapper" id="monitor-events">
+                <div role="tabpanel" class="tab-pane active latestEventsWrapper" id="monitor-events">
                     <table class="table table-condensed">
                         <caption>
                             <h4>Latest Events <span>(up, down, start, pause)</span></h4>
